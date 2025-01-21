@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CustomError } from "./_types/types";
-import Error from "@/app/_components/Error";
+import { CustomError } from "../_types/types";
+import Error from "../_components/Error";
 import Loading from "@/app/_components/Loading";
-import { PostData } from "./_types/types";
-import Post from "./posts/_components/Post";
+import { PostData } from "../_types/types";
+import Post from "./_components/Post";
 
 const Posts: React.FC = () => {
   const [posts, setPosts] = useState<PostData[]>([]);
