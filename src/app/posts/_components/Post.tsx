@@ -1,8 +1,7 @@
 "use client";
 
 import dayjs from "dayjs";
-
-import CategoryButton from "@/app/_components/CategoryButton";
+import CategoryButton from "@/app/posts/_components/CategoryButton";
 import { PostData } from "@/app/_types/types";
 import Link from "next/link";
 

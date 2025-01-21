@@ -6,7 +6,7 @@ import { PostData } from "@/app/_types/types";
 import dayjs from "dayjs";
 import NotFound from "@/app/_components/NotFound";
 import Loading from "@/app/_components/Loading";
-import CategoryButton from "@/app/_components/CategoryButton";
+import CategoryButton from "@/app/posts/_components/CategoryButton";
 import Image from "next/image";
 
 type PostResponse = {
