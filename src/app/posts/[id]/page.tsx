@@ -2,20 +2,16 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { PostData } from "@/app/_types/types";
-import dayjs from "dayjs";
+import { MicroCmsPost } from "@/app/_types/MicroCmsPost";
+import CategoryButton from "@/app/posts/_components/CategoryButton";
 import NotFound from "@/app/_components/NotFound";
 import Loading from "@/app/_components/Loading";
-import CategoryButton from "@/app/posts/_components/CategoryButton";
 import Image from "next/image";
-
-type PostResponse = {
-  post: PostData;
-};
+import dayjs from "dayjs";
 
 const PostDetails: React.FC = () => {
   const { id } = useParams();
-  const [post, setPost] = useState<PostData>();
+  const [post, setPost] = useState<MicroCmsPost | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -23,15 +19,21 @@ const PostDetails: React.FC = () => {
       setIsLoading(true);
       try {
         const res = await fetch(
-          `https://1hmfpsvto6.execute-api.ap-northeast-1.amazonaws.com/dev/posts/${id}`
+          `https://lczfym7uqu.microcms.io/api/v1/posts/${id}`,
+          {
+            headers: {
+              "X-MICROCMS-API-KEY": process.env.NEXT_PUBLIC_API_KEY as string,
+            },
+          }
         );
 
         if (!res.ok) {
           throw new Error("Failed to fetch the post.");
         }
-        const { post }: PostResponse = await res.json();
-        console.log("this is the post", post);
-        setPost(post);
+
+        const data: MicroCmsPost = await res.json();
+        console.log("this is the post", data);
+        setPost(data);
       } catch (err) {
         console.error(err);
       } finally {
@@ -53,9 +55,9 @@ const PostDetails: React.FC = () => {
           <div className="mt-10 mb-5">
             <Image
               className="h-auto max-w-full"
-              src={post.thumbnailUrl}
-              width={800}
-              height={400}
+              src={post.thumbnail.url}
+              width={post.thumbnail.width}
+              height={post.thumbnail.height}
               alt="A thumbnail of the post"
             />
           </div>
@@ -63,8 +65,8 @@ const PostDetails: React.FC = () => {
             <div className="flex justify-between">
               <div className="text-sm text-gray-400">{date}</div>
               <div className="flex px-4">
-                {post.categories.map((name, idx) => {
-                  return <CategoryButton key={idx} name={name} />;
+                {post.categories.map((category, idx) => {
+                  return <CategoryButton key={idx} name={category.name} />;
                 })}
               </div>
             </div>

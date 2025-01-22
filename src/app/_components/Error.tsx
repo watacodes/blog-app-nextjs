@@ -1,6 +1,6 @@
 "use client";
 
-import { CustomError } from "@/app/_types/types";
+import { CustomError } from "@/app/_types/CustomError";
 
 type Props = {
   error: CustomError;

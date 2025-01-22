@@ -1,25 +1,29 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CustomError } from "./_types/types";
 import Error from "@/app/_components/Error";
 import Loading from "@/app/_components/Loading";
-import { PostData } from "./_types/types";
 import Post from "./posts/_components/Post";
+import { CustomError } from "./_types/CustomError";
+import { MicroCmsPost } from "./_types/MicroCmsPost";
 
 const Posts: React.FC = () => {
-  const [posts, setPosts] = useState<PostData[]>([]);
+  const [posts, setPosts] = useState<MicroCmsPost[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<CustomError | null>(null);
+
   useEffect(() => {
     const fetcher = async () => {
       setIsLoading(true);
       try {
-        const res = await fetch(
-          "https://1hmfpsvto6.execute-api.ap-northeast-1.amazonaws.com/dev/posts"
-        );
-        const data = await res.json();
-        setPosts(data.posts);
+        const res = await fetch("https://lczfym7uqu.microcms.io/api/v1/posts", {
+          headers: {
+            "X-MICROCMS-API-KEY": process.env.NEXT_PUBLIC_API_KEY as string,
+          },
+        });
+        const { contents } = await res.json();
+        console.log(contents);
+        setPosts(contents);
       } catch (error: any) {
         if (error.message && error.code) {
           setError(error);
@@ -43,7 +47,7 @@ const Posts: React.FC = () => {
   return (
     <div className="w-screen h-svh flex flex-col items-center pt-10">
       <ul className="justify-center items-center w-[800px]">
-        {posts.map((post: PostData) => {
+        {posts.map((post: MicroCmsPost) => {
           return <Post post={post} key={post.id} />;
         })}
       </ul>
