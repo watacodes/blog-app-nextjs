@@ -16,11 +16,16 @@ const Posts: React.FC = () => {
     const fetcher = async () => {
       setIsLoading(true);
       try {
-        const res = await fetch("https://lczfym7uqu.microcms.io/api/v1/posts", {
+        /* const res = await fetch("https://lczfym7uqu.microcms.io/api/v1/posts", {
           headers: {
             "X-MICROCMS-API-KEY": process.env.NEXT_PUBLIC_API_KEY as string,
           },
+        }); */
+
+        const res = await fetch("https://localhost:3000/app/posts", {
+          method: "GET",
         });
+        console.log(res);
         const { contents } = await res.json();
         console.log(contents);
         setPosts(contents);
