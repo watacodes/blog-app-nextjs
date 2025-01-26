@@ -2,7 +2,6 @@
 
 import { PrismaClient } from "@prisma/client";
 import { NextResponse, NextRequest } from "next/server";
-import { Post } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
