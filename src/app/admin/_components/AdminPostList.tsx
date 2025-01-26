@@ -56,7 +56,11 @@ const AdminPostList = () => {
           </button>
         </Link>
       </div>
-      <div>{posts.map((post) => post.title)}</div>
+      <ul>
+        {posts.map((post) => {
+          return <li key={post.id}>{post.title}</li>;
+        })}
+      </ul>
     </div>
   );
 };
