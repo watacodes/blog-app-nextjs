@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Error from "@/app/_components/Error";
-import Loading from "@/app/_components/Loading";
 import Post from "./posts/_components/Post";
 import { CustomError } from "./_types/CustomError";
 import { MicroCmsPost } from "./_types/MicroCmsPost";
+import Error from "./_components/Error";
+import Loading from "./_components/Loading";
 
 const Posts: React.FC = () => {
   const [posts, setPosts] = useState<MicroCmsPost[]>([]);

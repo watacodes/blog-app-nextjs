@@ -1,7 +1,8 @@
 // POST: to post a new post via admin page
 
-import { NextResponse, NextRequest } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import { NextResponse, NextRequest } from "next/server";
+import { Post } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -20,29 +21,45 @@ const prisma = new PrismaClient();
 
  */
 
-type CreatePost = {
-  title: string;
-  content: string;
-  thumbnailUrl: string;
-  categories: { id: number }[];
-};
+// type CreatePost = {
+//   title: string;
+//   content: string;
+//   thumbnailUrl: string;
+//   categories: { id: number }[];
+// };
 
 export const POST = async (request: NextRequest) => {
-  const body = await request.json();
-  console.log(body);
-  const { title, content, categories, thumbnailUrl }: CreatePost = body;
+  try {
+    const body = await request.json();
+    const { title, content, categories, thumbnailUrl } = body;
 
-  const data = await prisma.post.create({
-    data: {
-      title,
-      content,
-      thumbnailUrl,
-    },
-  });
+    const data = await prisma.post.create({
+      data: {
+        title,
+        content,
+        thumbnailUrl,
+      },
+    });
 
-  console.log(categories);
+    for (const category of categories) {
+      await prisma.postCategory.create({
+        data: {
+          categoryId: category.id,
+          postId: data.id,
+        },
+      });
+    }
 
-  return NextResponse.json({});
+    console.log("POST request: ", data);
+
+    return NextResponse.json(
+      { status: "OK", message: "post request accepted", id: data.id },
+      { status: 200 }
+    );
+  } catch (error) {
+    if (error instanceof Error)
+      return NextResponse.json({ status: error.message }, { status: 400 });
+  }
 };
 
 // GET: /api/admin/posts
@@ -50,7 +67,10 @@ export const POST = async (request: NextRequest) => {
 
 export const GET = async (request: NextRequest) => {
   try {
-    const posts = prisma.post.findMany({
+    const posts = await prisma.post.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
       include: {
         postCategories: {
           include: {
@@ -63,10 +83,10 @@ export const GET = async (request: NextRequest) => {
           },
         },
       },
-      orderBy: {
-        createdAt: "desc",
-      },
     });
+
+    console.log("Get request: ", posts);
+
     return NextResponse.json({ status: "OK", posts: posts }, { status: 200 });
   } catch (error) {
     if (error instanceof Error)

@@ -1,8 +1,8 @@
 "use client";
 
 import dayjs from "dayjs";
-import { MicroCmsPost } from "@/app/_types/MicroCmsPost";
-import CategoryButton from "@/app/posts/_components/CategoryButton";
+import { MicroCmsPost } from "../../_types/MicroCmsPost";
+import CategoryButton from "./CategoryButton";
 import Link from "next/link";
 
 type Props = {
@@ -10,7 +10,6 @@ type Props = {
 };
 
 const Post: React.FC<Props> = ({ post }) => {
-  console.log(post);
   const date: string = dayjs(post.createdAt).format("MM/DD/YYYY");
 
   return (

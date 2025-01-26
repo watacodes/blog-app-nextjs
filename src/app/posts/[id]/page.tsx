@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { MicroCmsPost } from "@/app/_types/MicroCmsPost";
-import CategoryButton from "@/app/posts/_components/CategoryButton";
-import NotFound from "@/app/_components/NotFound";
-import Loading from "@/app/_components/Loading";
+import { MicroCmsPost } from "../../_types/MicroCmsPost";
+import CategoryButton from "../_components/CategoryButton";
+import NotFound from "../../_components/NotFound";
+import Loading from "../../_components/Loading";
 import Image from "next/image";
 import dayjs from "dayjs";
 
