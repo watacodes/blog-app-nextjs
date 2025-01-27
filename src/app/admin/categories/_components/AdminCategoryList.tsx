@@ -8,7 +8,7 @@ type CategoryProps = {
   id: number;
 };
 
-const AdminCategoryList = () => {
+const AdminCategoryList: React.FC = () => {
   const [categoryList, setCategoryList] = useState<CategoryProps[]>([]);
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const AdminCategoryList = () => {
         <h2 className="font-bold text-xl">カテゴリー一覧</h2>
 
         {/* TODO: Add create button to add a new category */}
-        <Link href="">
+        <Link href="./categories/new">
           <button className="text-white bg-blue-600 rounded-sm px-3 py-1 text-md">
             新規作成
           </button>
