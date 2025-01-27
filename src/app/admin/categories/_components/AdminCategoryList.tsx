@@ -43,7 +43,14 @@ const AdminCategoryList: React.FC = () => {
       </div>
       <ul>
         {categoryList.map((category) => {
-          return <li key={category.id}>{category.name}</li>;
+          return (
+            <li
+              className="w-full font-bold p-4 border-solid border-b-2"
+              key={category.id}
+            >
+              {category.name}
+            </li>
+          );
         })}
       </ul>
     </div>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { MicroCmsPost } from "../../_types/MicroCmsPost";
 import { CustomError } from "../../_types/CustomError";
+import dayjs from "dayjs";
 
 const AdminPostList = () => {
   // TODO: After implementing the GET method to fetch all the posts,
@@ -58,7 +59,15 @@ const AdminPostList = () => {
       </div>
       <ul>
         {posts.map((post) => {
-          return <li key={post.id}>{post.title}</li>;
+          const date = dayjs(post.createdAt).format("YYYY/M/D");
+          return (
+            <li className="font-bold border-solid border-b-2 p-4" key={post.id}>
+              {post.title}
+              <div className="text-sm font-light text-gray-400 mb-2">
+                {date}
+              </div>
+            </li>
+          );
         })}
       </ul>
     </div>

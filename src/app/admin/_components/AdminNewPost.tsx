@@ -10,7 +10,6 @@ import {
   Box,
   Chip,
 } from "@mui/material";
-import { Theme, useTheme } from "@mui/material/styles";
 
 import { Controller, useForm } from "react-hook-form";
 import AdminSideBar from "./AdminSideBar";
@@ -180,7 +179,7 @@ export const AdminNewPost: React.FC = () => {
           </FormControl>
           <button
             type="submit"
-            className="text-white bg-purple-600 bg-rounded-sm px-3 py-1 mr-2"
+            className="text-white bg-purple-600 rounded-md px-3 py-1 mt-4"
           >
             作成
           </button>
