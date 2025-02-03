@@ -1,16 +1,4 @@
-// @ /api/admin/categories
-// Feature: POST -> Add new categories
-/*
-
-model Category {
-  id        Int            @id @default(autoincrement())
-  name      String
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
-  posts     PostCategory[]
-}
-
-*/
+// GET /api/admin/categories
 
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
@@ -36,21 +24,35 @@ export const GET = async (request: NextRequest) => {
   }
 };
 
-export const POST = async (request: NextRequest) => {
-  // submit the category name via front-end form
-  // and take the category name and create another Category
+// POST /api/admin/categories
 
+export const POST = async (request: NextRequest) => {
   try {
     const body = await request.json();
-    console.log(body);
+    console.log("Body: ", body);
     const { name } = body;
+
+    const findExistingCategory = await prisma.category.findFirst({
+      where: {
+        name,
+      },
+    });
+
+    if (findExistingCategory) {
+      return NextResponse.json(
+        {
+          status: "error",
+          message: "Category name already exists.",
+        },
+        { status: 400 }
+      );
+    }
 
     const data = await prisma.category.create({
       data: {
         name,
       },
     });
-    console.log("POST request: ", data);
 
     return NextResponse.json(
       { status: "OK", message: "category added", data: data },

@@ -14,11 +14,10 @@ const AdminFetchCategoryList: React.FC = () => {
   useEffect(() => {
     const fetcher = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/admin/categories", {
+        const res = await fetch("/api/admin/categories", {
           method: "GET",
         });
         const { categories } = await res.json();
-        console.log(categories);
         setCategoryList(categories);
       } catch (error) {
         console.log(error);

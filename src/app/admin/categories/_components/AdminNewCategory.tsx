@@ -1,29 +1,30 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import AdminSideBar from "../../_components/AdminSideBar";
-
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+
+const schema = yup.object({
+  name: yup.string().required(),
+});
 
 export const AdminNewCategory: React.FC = () => {
-  const schema = yup.object({
-    name: yup.string().required(),
-  });
+  const router = useRouter();
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(schema),
     mode: "onSubmit",
   });
 
   const onSubmit = async (category) => {
-    console.log("cat: ", category);
     try {
-      const res = await fetch("http://localhost:3000/api/admin/categories/", {
+      const res = await fetch("/api/admin/categories/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -32,10 +33,10 @@ export const AdminNewCategory: React.FC = () => {
       });
 
       const result = await res.json();
-      console.log("The category has been submitted: ", result);
+      console.log("Category: ", result);
+      router.push("/admin/categories");
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) return;
+      throw new Error("POST request failed.");
     }
   };
 
@@ -51,6 +52,7 @@ export const AdminNewCategory: React.FC = () => {
             <input
               type="text"
               id="name"
+              disabled={isSubmitting}
               className="border border-solid rounded-sm p-2 border-gray-300 w-full mb-4"
               {...register("name")}
             />
@@ -58,6 +60,7 @@ export const AdminNewCategory: React.FC = () => {
           </div>
           <button
             type="submit"
+            disabled={isSubmitting}
             className="text-white bg-purple-600 rounded-md px-3 py-1 mr-2"
           >
             作成

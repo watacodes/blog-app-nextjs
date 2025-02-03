@@ -1,13 +1,13 @@
 "use client";
 
 import AdminSideBar from "../../_components/AdminSideBar";
-import { AdminNewCategory } from "../_components/AdminNewCategory";
+import CategoryEditPage from "./_components/AdminCategoryEditPage";
 
 const Page: React.FC = () => {
   return (
-    <div className="flex">
+    <div className="flex w-full">
       <AdminSideBar />
-      <AdminNewCategory />
+      <CategoryEditPage />
     </div>
   );
 };
