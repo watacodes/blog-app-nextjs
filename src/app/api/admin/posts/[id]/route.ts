@@ -61,16 +61,18 @@ export const PUT = async (
       },
     });
 
+    const newCategoryIds = postCategories.map((c) => c.id);
+
     await prisma.postCategory.deleteMany({
       where: {
         postId: Number(id),
       },
     });
 
-    for (const category of postCategories) {
+    for (const newId of newCategoryIds) {
       await prisma.postCategory.create({
         data: {
-          categoryId: Number(category.id),
+          categoryId: newId,
           postId: Number(id),
         },
       });

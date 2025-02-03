@@ -47,6 +47,7 @@ export const AdminPost: React.FC<Props> = ({
   onDelete,
 }) => {
   const [categoryList, setCategoryList] = useState<Category[]>([]);
+  console.log("Cat list: ", categoryList);
 
   const {
     register,
@@ -90,10 +91,16 @@ export const AdminPost: React.FC<Props> = ({
     e: SelectChangeEvent<number[]>,
     feildOnChange: (value: { id: number }[]) => void
   ) => {
-    const selectedCategories = e.target.value as number[];
-    const formattedCategories = selectedCategories.map((id) => ({ id }));
-    console.log(formattedCategories);
-    feildOnChange(formattedCategories);
+    const selectedCategories = (e.target.value as number[]) || [];
+    const availableCatIds = categoryList.map((c) => c.id);
+
+    const validCatIds = selectedCategories
+      .filter((id) => availableCatIds.includes(id))
+      .map((id) => ({
+        id,
+      }));
+
+    feildOnChange(validCatIds);
   };
 
   return (
@@ -130,43 +137,54 @@ export const AdminPost: React.FC<Props> = ({
             fullWidth
             margin="normal"
             helperText={errors.thumbnailUrl?.message}
+            sx={{ mb: 4 }}
           />
 
-          <FormControl fullWidth margin="normal" sx={{ mt: 4 }}>
+          <div className="flex flex-col">
             <InputLabel id="postCategories">カテゴリー</InputLabel>
-            <Controller
-              name="postCategories"
-              control={control}
-              render={({ field }) => (
-                <Select
-                  {...field}
-                  labelId="categories"
-                  multiple
-                  value={field.value ? field.value.map((c) => c.id) : []}
-                  onChange={(e) => handleCategoryChange(e, field.onChange)}
-                  input={<OutlinedInput id="select-multiple-chip" />}
-                  renderValue={(selected) => (
-                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                      {categoryList
-                        .filter((c) => selected.includes(c.id))
-                        .map((c) => (
-                          <Chip key={c.id} label={c.name} />
-                        ))}
-                    </Box>
-                  )}
-                >
-                  {categoryList.map((c) => {
-                    return (
-                      <MenuItem key={c.id} value={c.id}>
-                        {c.name}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              )}
-            />
-          </FormControl>
 
+            <FormControl fullWidth margin="normal">
+              <Controller
+                name="postCategories"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    fullWidth
+                    labelId="postCategories"
+                    multiple
+                    value={field.value ? field.value.map((c) => c.id) : []}
+                    onChange={(e) => handleCategoryChange(e, field.onChange)}
+                    input={<OutlinedInput id="select-multiple-chip" />}
+                    renderValue={(selected) => (
+                      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                        {categoryList
+                          .filter((c) => selected.includes(c.id))
+                          .map((c) => (
+                            <Chip key={c.id} label={c.name} />
+                          ))}
+                      </Box>
+                    )}
+                    MenuProps={{
+                      PaperProps: {
+                        sx: {
+                          mt: 4,
+                        },
+                      },
+                    }}
+                  >
+                    {categoryList.map((c) => {
+                      return (
+                        <MenuItem key={c.id} value={c.id}>
+                          {c.name}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                )}
+              />
+            </FormControl>
+          </div>
           <button
             type="submit"
             className="text-white bg-purple-600 rounded-md px-3 py-1 mt-4 mr-2"
