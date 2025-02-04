@@ -5,5 +5,12 @@ export type PostType = {
   thumbnailUrl: string;
   createdAt?: Date;
   updatedAt?: Date;
-  postCategories: { id: number }[];
+  postCategories: Category[];
+};
+
+export type Category = {
+  id: number;
+  name: string;
+  categoryId: number;
+  postId: number;
 };

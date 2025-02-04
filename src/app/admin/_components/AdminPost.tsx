@@ -18,11 +18,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import { PostType } from "../../_types/PostType";
-
-type Category = {
-  id: number;
-  name: string;
-};
+import { Category } from "../../_types/PostType";
 
 type Props = {
   initialPostData?: PostType;
@@ -36,7 +32,7 @@ const schema = yup.object({
   thumbnailUrl: yup.string().required(),
   postCategories: yup.array().of(
     yup.object({
-      id: yup.number().required(),
+      categoryId: yup.number().required(),
     })
   ),
 });
@@ -72,6 +68,8 @@ export const AdminPost: React.FC<Props> = ({
     }
   }, [initialPostData, reset]);
 
+  console.log(initialPostData);
+
   useEffect(() => {
     const fetcher = async () => {
       try {
@@ -89,15 +87,14 @@ export const AdminPost: React.FC<Props> = ({
 
   const handleCategoryChange = (
     e: SelectChangeEvent<number[]>,
-    feildOnChange: (value: { id: number }[]) => void
+    feildOnChange: (value: { categoryId: number }[]) => void
   ) => {
-    const selectedCategories = (e.target.value as number[]) || [];
+    const selectedCategories = (e.target.value as []) || [];
     const availableCatIds = categoryList.map((c) => c.id);
-
     const validCatIds = selectedCategories
       .filter((id) => availableCatIds.includes(id))
       .map((id) => ({
-        id,
+        categoryId: id,
       }));
 
     feildOnChange(validCatIds);
@@ -153,18 +150,26 @@ export const AdminPost: React.FC<Props> = ({
                     fullWidth
                     labelId="postCategories"
                     multiple
-                    value={field.value ? field.value.map((c) => c.id) : []}
+                    value={
+                      field.value ? field.value.map((c) => c.categoryId) : []
+                    }
                     onChange={(e) => handleCategoryChange(e, field.onChange)}
                     input={<OutlinedInput id="select-multiple-chip" />}
-                    renderValue={(selected) => (
-                      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                        {categoryList
-                          .filter((c) => selected.includes(c.id))
-                          .map((c) => (
-                            <Chip key={c.id} label={c.name} />
-                          ))}
-                      </Box>
-                    )}
+                    renderValue={(selected) => {
+                      console.log("selected: ", selected);
+                      return (
+                        <Box
+                          sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}
+                        >
+                          {categoryList
+                            .filter((c) => selected.includes(c.id))
+                            .map((c) => {
+                              console.log("chip: ", c);
+                              return <Chip key={c.id} label={c.name} />;
+                            })}
+                        </Box>
+                      );
+                    }}
                     MenuProps={{
                       PaperProps: {
                         sx: {

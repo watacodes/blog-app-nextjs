@@ -32,7 +32,6 @@ export const GET = async (
 
     return NextResponse.json({ status: "OK", post: post }, { status: 200 });
   } catch (error) {
-    console.log(error);
     if (error instanceof Error)
       return NextResponse.json({ status: error.message }, { status: 400 });
   }
@@ -50,6 +49,8 @@ export const PUT = async (
     const body = await request.json();
     const { title, content, thumbnailUrl, postCategories } = body;
 
+    console.log("postcats: ", postCategories);
+
     const updatePost = await prisma.post.update({
       where: {
         id: Number(id),
@@ -61,7 +62,7 @@ export const PUT = async (
       },
     });
 
-    const newCategoryIds = postCategories.map((c) => c.id);
+    const newCategoryIds = postCategories.map((c) => c.categoryId);
 
     await prisma.postCategory.deleteMany({
       where: {

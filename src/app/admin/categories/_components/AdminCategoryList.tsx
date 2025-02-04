@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { CategoryProps } from "../_types/Category";
 import Loading from "../../../_components/Loading";
+import { Category } from "../../../_types/PostType";
 
 const AdminCategoryList: React.FC = () => {
-  const [categoryList, setCategoryList] = useState<CategoryProps[]>([]);
+  const [categoryList, setCategoryList] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -18,6 +18,7 @@ const AdminCategoryList: React.FC = () => {
           method: "GET",
         });
         const { categories } = await res.json();
+        console.log("cat: ", categories);
         setCategoryList(categories);
       } catch (error) {
         console.log(error);
