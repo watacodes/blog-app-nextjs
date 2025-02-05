@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import { CustomError } from "./_types/CustomError";
 import { DisplayPostType } from "./_types/DispalyPostType";
-import Error from "./_components/Error";
 import Loading from "./_components/Loading";
 import PostCard from "./_components/PostCard";
+import ErrorComponent from "./_components/Error";
 
 const Posts: React.FC = () => {
   const [posts, setPosts] = useState<DisplayPostType[]>([]);
@@ -30,16 +30,8 @@ const Posts: React.FC = () => {
           })),
         }));
         setPosts(formattedPosts);
-      } catch (error: any) {
-        if (error.message && error.code) {
-          setError(error);
-        } else {
-          const fallbackError: CustomError = {
-            message: error.message || "Unexpected Error occured.",
-            code: error.code || 500,
-          };
-          setError(fallbackError);
-        }
+      } catch (error) {
+        if (error instanceof Error) setError(error);
       } finally {
         setIsLoading(false);
       }
@@ -48,7 +40,7 @@ const Posts: React.FC = () => {
   }, []);
 
   if (isLoading) return <Loading />;
-  if (error) return <Error error={error} />;
+  if (error) return <ErrorComponent error={error} />;
 
   return (
     <div className="w-screen h-svh flex flex-col items-center pt-10">

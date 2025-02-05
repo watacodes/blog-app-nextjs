@@ -6,9 +6,9 @@ import { CustomError } from "../../_types/CustomError";
 import { PostType } from "../../_types/PostType";
 import dayjs from "dayjs";
 import Loading from "../../_components/Loading";
-import Error from "../../_components/Error";
+import ErrorComponent from "../../_components/Error";
 
-const AdminPostList = () => {
+const AdminPostList: React.FC = () => {
   const [posts, setPosts] = useState<PostType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<CustomError | null>(null);
@@ -20,18 +20,14 @@ const AdminPostList = () => {
         const res = await fetch("/api/admin/posts", {
           method: "GET",
         });
+
+        if (!res.ok) {
+          throw new Error("Could not fetch posts.");
+        }
         const { posts } = await res.json();
         setPosts(posts);
-      } catch (error: any) {
-        if (error.message && error.code) {
-          setError(error);
-        } else {
-          const fallbackError: CustomError = {
-            message: error.message || "Unexpected Error occured.",
-            code: error.code || 500,
-          };
-          setError(fallbackError);
-        }
+      } catch (error) {
+        if (error instanceof Error) setError(error);
       } finally {
         setIsLoading(false);
       }
@@ -40,7 +36,7 @@ const AdminPostList = () => {
   }, []);
 
   if (isLoading) return <Loading />;
-  if (error) return <Error error={error} />;
+  if (error) return <ErrorComponent error={error} />;
 
   return (
     <div className="flex flex-col w-full p-4">

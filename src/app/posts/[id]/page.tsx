@@ -7,11 +7,14 @@ import Loading from "../../_components/Loading";
 import Image from "next/image";
 import dayjs from "dayjs";
 import { DisplayPostType } from "../../_types/DispalyPostType";
+import { CustomError } from "../../_types/CustomError";
+import ErrorComponent from "../../_components/Error";
 
 const PostDetails: React.FC = () => {
   const { id } = useParams();
   const [post, setPost] = useState<DisplayPostType | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<CustomError | null>(null);
 
   useEffect(() => {
     const fetcher = async () => {
@@ -35,8 +38,10 @@ const PostDetails: React.FC = () => {
         };
         console.log("this is the post", formattedPost);
         setPost(formattedPost);
-      } catch (err) {
-        console.error(err);
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error);
+        }
       } finally {
         setIsLoading(false);
       }
@@ -46,6 +51,7 @@ const PostDetails: React.FC = () => {
 
   if (isLoading) return <Loading />;
   if (!post) return <NotFound />;
+  if (error) return <ErrorComponent error={error} />;
 
   const date: string = dayjs(post.createdAt).format("MM/DD/YYYY");
 
@@ -65,7 +71,7 @@ const PostDetails: React.FC = () => {
           <div className="flex justify-between">
             <div className="text-sm text-gray-400">{date}</div>
             <div className="flex px-4">
-              {post.categories?.map((category, idx) => {
+              {post.categories.map((category, idx) => {
                 return (
                   <button
                     key={idx}

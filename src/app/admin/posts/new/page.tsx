@@ -6,6 +6,7 @@ import { PostType } from "../../../_types/PostType";
 
 const NewPostPage: React.FC = () => {
   const router = useRouter();
+
   const handleCreate = async (post: PostType) => {
     try {
       const res = await fetch("/api/admin/posts/new", {

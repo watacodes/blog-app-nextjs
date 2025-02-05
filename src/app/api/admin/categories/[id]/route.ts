@@ -38,6 +38,12 @@ export const PUT = async (
   const { name } = await request.json();
 
   try {
+    const findDuplicate = await prisma.category.findFirst({
+      where: { name },
+    });
+
+    if (findDuplicate) return;
+
     const update = await prisma.category.update({
       where: { id: Number(id) },
       data: { name },

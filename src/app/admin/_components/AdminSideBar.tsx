@@ -2,15 +2,24 @@
 
 import Link from "next/link";
 
+type MenuItemProps = {
+  href: string;
+  children: React.ReactNode;
+};
+
+const MenuItem: React.FC<MenuItemProps> = ({ children, href }) => {
+  return (
+    <Link href={href} className="p-4">
+      {children}
+    </Link>
+  );
+};
+
 const AdminSideBar: React.FC = () => {
   return (
     <ul className="w-1/5 h-screen bg-gray-200 flex flex-col">
-      <Link href="/admin/posts" className="p-4 ">
-        記事一覧
-      </Link>
-      <Link href="/admin/categories" className="p-4">
-        カテゴリー一覧
-      </Link>
+      <MenuItem href="/admin/posts">記事一覧</MenuItem>
+      <MenuItem href="/admin/categories">カテゴリー一覧</MenuItem>
     </ul>
   );
 };

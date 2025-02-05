@@ -6,7 +6,7 @@ type Props = {
   error: CustomError;
 };
 
-const Error: React.FC<Props> = ({ error }) => {
+const ErrorComponent: React.FC<Props> = ({ error }) => {
   return (
     <div>
       Oops, something wrong happened! - {error.code}: {error.message}
@@ -14,4 +14,4 @@ const Error: React.FC<Props> = ({ error }) => {
   );
 };
 
-export default Error;
+export default ErrorComponent;

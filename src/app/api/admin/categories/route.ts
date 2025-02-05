@@ -5,7 +5,7 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export const GET = async (request: NextRequest) => {
+export const GET = async () => {
   try {
     const categories = await prisma.category.findMany({
       select: { name: true, id: true },
@@ -30,11 +30,11 @@ export const POST = async (request: NextRequest) => {
   try {
     const body = await request.json();
     console.log("Body: ", body);
-    const { name } = body;
+    const { category } = body;
 
     const findExistingCategory = await prisma.category.findFirst({
       where: {
-        name,
+        name: category,
       },
     });
 
@@ -50,7 +50,7 @@ export const POST = async (request: NextRequest) => {
 
     const data = await prisma.category.create({
       data: {
-        name,
+        name: category,
       },
     });
 
