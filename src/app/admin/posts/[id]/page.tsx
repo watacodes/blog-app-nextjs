@@ -20,6 +20,7 @@ const AdminPostEditPage: React.FC = () => {
           method: "GET",
         });
         const { post } = await res.json();
+        console.log("post: ", post);
         setPost(post);
       } catch (error) {
         throw new Error(error);

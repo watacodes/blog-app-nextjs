@@ -1,30 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Select from "react-select";
-
-type Props = {
-  name: string;
-  id: number;
-};
+import useCategoryList from "../../_hooks/useCategoryList";
 
 const AdminFetchCategoryList: React.FC = () => {
-  const [categoryList, setCategoryList] = useState<Props[]>([]);
-
-  useEffect(() => {
-    const fetcher = async () => {
-      try {
-        const res = await fetch("/api/admin/categories", {
-          method: "GET",
-        });
-        const { categories } = await res.json();
-        setCategoryList(categories);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetcher();
-  }, []);
+  const { categoryList } = useCategoryList();
 
   return (
     <Select

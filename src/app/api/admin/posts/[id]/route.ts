@@ -64,6 +64,8 @@ export const PUT = async (
 
     const newCategoryIds = postCategories.map((c) => c.categoryId);
 
+    console.log("newcat", newCategoryIds);
+
     await prisma.postCategory.deleteMany({
       where: {
         postId: Number(id),

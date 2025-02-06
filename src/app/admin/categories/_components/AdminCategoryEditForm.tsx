@@ -39,10 +39,10 @@ const CategoryEditForm: React.FC<CategoryType> = ({
   if (isLoading) return <Loading />;
 
   return (
-    <>
+    <div className="w-full">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="w-full">
-          <label htmlFor="category" className="text-gray-500">
+        <div className="flex flex-col gap-1">
+          <label htmlFor="category" className="text-gray-500 pb-4">
             カテゴリー名
           </label>
 
@@ -53,17 +53,17 @@ const CategoryEditForm: React.FC<CategoryType> = ({
             disabled={isSubmitting}
             {...register("category")}
           />
+
+          <p className="text-red-600 my-2">{errors.category?.message}</p>
+
+          <Buttons
+            initialData={initialData}
+            isSubmitting={isSubmitting}
+            onDelete={onDelete}
+          />
         </div>
-
-        <p className="text-red-600 my-2">{errors.category?.message}</p>
-
-        <Buttons
-          initialData={initialData}
-          isSubmitting={isSubmitting}
-          onDelete={onDelete}
-        />
       </form>
-    </>
+    </div>
   );
 };
 

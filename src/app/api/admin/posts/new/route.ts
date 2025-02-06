@@ -14,10 +14,12 @@ export const POST = async (request: NextRequest) => {
       data: { title, content, thumbnailUrl },
     });
 
-    for (const category of postCategories) {
+    const categoryIds = postCategories.map((c) => c.categoryId);
+
+    for (const catId of categoryIds) {
       await prisma.postCategory.create({
         data: {
-          categoryId: category.id,
+          categoryId: catId,
           postId: post.id,
         },
       });

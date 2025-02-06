@@ -1,53 +1,20 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import NotFound from "../../_components/NotFound";
 import Loading from "../../_components/Loading";
 import Image from "next/image";
 import dayjs from "dayjs";
-import { DisplayPostType } from "../../_types/DispalyPostType";
-import { CustomError } from "../../_types/CustomError";
 import ErrorComponent from "../../_components/Error";
+import useFetchPost from "./_hooks/useFetchPost";
+
+export type Param = {
+  id: string;
+};
 
 const PostDetails: React.FC = () => {
-  const { id } = useParams();
-  const [post, setPost] = useState<DisplayPostType | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<CustomError | null>(null);
-
-  useEffect(() => {
-    const fetcher = async () => {
-      setIsLoading(true);
-      try {
-        const res = await fetch(`/api/posts/${id}`, {
-          method: "GET",
-        });
-
-        if (!res.ok) {
-          throw new Error("Failed to fetch the post.");
-        }
-
-        const result = await res.json();
-        const formattedPost = {
-          ...result.post,
-          categories: result.post.postCategories.map((cat) => ({
-            id: cat.category.id,
-            name: cat.category.name,
-          })),
-        };
-        console.log("this is the post", formattedPost);
-        setPost(formattedPost);
-      } catch (error) {
-        if (error instanceof Error) {
-          setError(error);
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetcher();
-  }, [id]);
+  const { id } = useParams() as Param;
+  const { post, isLoading, error } = useFetchPost(id);
 
   if (isLoading) return <Loading />;
   if (!post) return <NotFound />;

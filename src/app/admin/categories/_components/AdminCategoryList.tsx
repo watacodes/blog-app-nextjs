@@ -4,31 +4,10 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import Loading from "../../../_components/Loading";
 import { Category } from "../../../_types/PostType";
+import useCategoryList from "../../../_hooks/useCategoryList";
 
 const AdminCategoryList: React.FC = () => {
-  const [categoryList, setCategoryList] = useState<Category[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  useEffect(() => {
-    setIsLoading(true);
-
-    const fetcher = async () => {
-      try {
-        const res = await fetch("/api/admin/categories/", {
-          method: "GET",
-        });
-        const { categories } = await res.json();
-        console.log("cat: ", categories);
-        setCategoryList(categories);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetcher();
-  }, []);
+  const { categoryList, isLoading } = useCategoryList();
 
   if (isLoading) return <Loading />;
 
@@ -47,7 +26,7 @@ const AdminCategoryList: React.FC = () => {
         {categoryList.map((category) => {
           return (
             <li
-              className="w-full font-bold p-4 border-solid border-b-2"
+              className="w-full font-bold p-4 border-solid border-b-2 hover:bg-slate-100 transition-all"
               key={category.id}
             >
               <Link href={`/admin/categories/${category.id}`}>

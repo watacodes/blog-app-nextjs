@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect } from "react";
-import { InputLabel, TextField } from "@mui/material";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import AdminCategorySelect from "./AdminCategorySelect";
 import { PostType } from "../../_types/PostType";
+import CustomTextField from "../../_components/CustomTextField";
 
 type Props = {
   initialPostData?: PostType;
@@ -30,13 +30,7 @@ export const AdminPost: React.FC<Props> = ({
   onSubmit,
   onDelete,
 }) => {
-  const {
-    register,
-    handleSubmit,
-    control,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm<PostType>({
+  const methods = useForm({
     resolver: yupResolver(schema) as any,
     mode: "onSubmit",
     defaultValues: initialPostData || {
@@ -47,6 +41,12 @@ export const AdminPost: React.FC<Props> = ({
     },
   });
 
+  const {
+    handleSubmit,
+    reset,
+    formState: { isSubmitting },
+  } = methods;
+
   useEffect(() => {
     if (initialPostData) {
       reset(initialPostData);
@@ -54,45 +54,22 @@ export const AdminPost: React.FC<Props> = ({
   }, [initialPostData, reset]);
 
   return (
-    <>
+    <FormProvider {...methods}>
       <div className="flex flex-col w-full py-4 px-8">
         <h1 className="font-bold text-2xl mb-10">
           {initialPostData ? "記事編集" : "記事作成"}
         </h1>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
-          <InputLabel id="title">タイトル</InputLabel>
-          <TextField
-            {...register("title")}
-            fullWidth
-            margin="normal"
-            sx={{ mb: 4 }}
-            disabled={isSubmitting}
-            helperText={errors.title?.message}
-          />
+          <CustomTextField labelName="title">タイトル</CustomTextField>
+          <CustomTextField labelName="content" rows={8}>
+            内容
+          </CustomTextField>
+          <CustomTextField labelName="thumbnailUrl">
+            サムネイルURL
+          </CustomTextField>
 
-          <InputLabel id="content">内容</InputLabel>
-          <TextField
-            {...register("content")}
-            multiline
-            rows={4}
-            fullWidth
-            margin="normal"
-            sx={{ mb: 4 }}
-            disabled={isSubmitting}
-            helperText={errors.content?.message}
-          />
+          <AdminCategorySelect />
 
-          <InputLabel id="thumbnailUrl">サムネイルURL</InputLabel>
-          <TextField
-            {...register("thumbnailUrl")}
-            fullWidth
-            margin="normal"
-            sx={{ mb: 4 }}
-            disabled={isSubmitting}
-            helperText={errors.thumbnailUrl?.message}
-          />
-
-          <AdminCategorySelect control={control} isSubmitting={isSubmitting} />
           <button
             type="submit"
             disabled={isSubmitting}
@@ -112,6 +89,6 @@ export const AdminPost: React.FC<Props> = ({
           )}
         </form>
       </div>
-    </>
+    </FormProvider>
   );
 };

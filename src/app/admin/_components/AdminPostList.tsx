@@ -1,39 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { CustomError } from "../../_types/CustomError";
-import { PostType } from "../../_types/PostType";
 import dayjs from "dayjs";
 import Loading from "../../_components/Loading";
 import ErrorComponent from "../../_components/Error";
+import usePosts from "../../_hooks/usePosts";
 
 const AdminPostList: React.FC = () => {
-  const [posts, setPosts] = useState<PostType[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<CustomError | null>(null);
-
-  useEffect(() => {
-    const fetcher = async () => {
-      setIsLoading(true);
-      try {
-        const res = await fetch("/api/admin/posts", {
-          method: "GET",
-        });
-
-        if (!res.ok) {
-          throw new Error("Could not fetch posts.");
-        }
-        const { posts } = await res.json();
-        setPosts(posts);
-      } catch (error) {
-        if (error instanceof Error) setError(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetcher();
-  }, []);
+  const { posts, isLoading, error } = usePosts();
 
   if (isLoading) return <Loading />;
   if (error) return <ErrorComponent error={error} />;
@@ -52,7 +26,10 @@ const AdminPostList: React.FC = () => {
         {posts.map((post) => {
           const date = dayjs(post.createdAt).format("YYYY/M/D");
           return (
-            <li className="font-bold border-solid border-b-2 p-4" key={post.id}>
+            <li
+              className="font-bold border-solid border-b-2 p-4 hover:bg-slate-100 transition-all"
+              key={post.id}
+            >
               <Link href={`/admin/posts/${post.id}`}>
                 {post.title}
                 <div className="text-sm font-light text-gray-400 mb-2">

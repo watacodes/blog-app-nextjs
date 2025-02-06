@@ -1,6 +1,4 @@
-import { useState, useEffect } from "react";
-import { Category } from "../../_types/PostType";
-import { Controller } from "react-hook-form";
+"use client";
 
 import {
   Select,
@@ -13,23 +11,15 @@ import {
   Chip,
 } from "@mui/material";
 
-const AdminCategorySelect = ({ control, isSubmitting }) => {
-  const [categoryList, setCategoryList] = useState<Category[]>([]);
+import { Controller, useFormContext } from "react-hook-form";
+import useCategoryList from "../../_hooks/useCategoryList";
 
-  useEffect(() => {
-    const fetcher = async () => {
-      try {
-        const res = await fetch("/api/admin/categories", {
-          method: "GET",
-        });
-        const { categories } = await res.json();
-        setCategoryList(categories);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetcher();
-  }, []);
+const AdminCategorySelect: React.FC = () => {
+  const { categoryList } = useCategoryList();
+  const {
+    control,
+    formState: { isSubmitting },
+  } = useFormContext();
 
   const handleCategoryChange = (
     e: SelectChangeEvent<number[]>,
@@ -42,7 +32,6 @@ const AdminCategorySelect = ({ control, isSubmitting }) => {
       .map((id) => ({
         categoryId: id,
       }));
-
     feildOnChange(validCatIds);
   };
 
@@ -65,7 +54,6 @@ const AdminCategorySelect = ({ control, isSubmitting }) => {
               onChange={(e) => handleCategoryChange(e, field.onChange)}
               input={<OutlinedInput id="select-multiple-chip" />}
               renderValue={(selected) => {
-                console.log("selected: ", selected);
                 return (
                   <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                     {categoryList
@@ -79,7 +67,7 @@ const AdminCategorySelect = ({ control, isSubmitting }) => {
               MenuProps={{
                 PaperProps: {
                   sx: {
-                    mt: 4,
+                    mt: 16,
                   },
                 },
               }}

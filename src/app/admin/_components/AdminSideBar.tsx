@@ -9,9 +9,11 @@ type MenuItemProps = {
 
 const MenuItem: React.FC<MenuItemProps> = ({ children, href }) => {
   return (
-    <Link href={href} className="p-4">
-      {children}
-    </Link>
+    <li className="py-8 px-2 hover:bg-slate-300 transition-all">
+      <Link href={href} className="p-4">
+        {children}
+      </Link>
+    </li>
   );
 };
 
