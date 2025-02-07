@@ -1,7 +1,6 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import NotFound from "../../_components/NotFound";
 import Loading from "../../_components/Loading";
 import Image from "next/image";
 import dayjs from "dayjs";
@@ -16,8 +15,8 @@ const PostDetails: React.FC = () => {
   const { id } = useParams() as Param;
   const { post, isLoading, error } = usePost(id);
 
+  console.log(post);
   if (isLoading) return <Loading />;
-  if (!post) return <NotFound />;
   if (error) return <ErrorComponent error={error} />;
 
   const date: string = dayjs(post.createdAt).format("MM/DD/YYYY");

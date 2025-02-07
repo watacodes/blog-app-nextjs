@@ -16,7 +16,6 @@ import useCategories from "../../_hooks/useCategories";
 
 const AdminCategorySelect: React.FC = () => {
   const { data } = useCategories();
-  console.log(data);
   const {
     control,
     formState: { isSubmitting },

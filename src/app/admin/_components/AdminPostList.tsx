@@ -7,7 +7,7 @@ import ErrorComponent from "../../_components/Error";
 import usePosts from "../../_hooks/usePosts";
 
 const AdminPostList: React.FC = () => {
-  const { posts, isLoading, error } = usePosts();
+  const { data, isLoading, error } = usePosts();
 
   if (isLoading) return <Loading />;
   if (error) return <ErrorComponent error={error} />;
@@ -23,7 +23,7 @@ const AdminPostList: React.FC = () => {
         </Link>
       </div>
       <ul>
-        {posts.map((post) => {
+        {data.posts.map((post) => {
           const date = dayjs(post.createdAt).format("YYYY/M/D");
           return (
             <li
