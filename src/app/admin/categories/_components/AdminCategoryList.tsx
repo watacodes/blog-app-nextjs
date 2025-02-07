@@ -1,15 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import Loading from "../../../_components/Loading";
-import { Category } from "../../../_types/PostType";
-import useCategoryList from "../../../_hooks/useCategoryList";
+import useCategories from "../../../_hooks/useCategories";
+import ErrorComponent from "../../../_components/Error";
 
 const AdminCategoryList: React.FC = () => {
-  const { categoryList, isLoading } = useCategoryList();
+  const { data, error, isLoading } = useCategories();
 
   if (isLoading) return <Loading />;
+  if (error) return <ErrorComponent error={error} />;
 
   return (
     <div className="flex flex-col w-full p-4">
@@ -23,7 +23,7 @@ const AdminCategoryList: React.FC = () => {
         </Link>
       </div>
       <ul>
-        {categoryList.map((category) => {
+        {data.categories.map((category) => {
           return (
             <li
               className="w-full font-bold p-4 border-solid border-b-2 hover:bg-slate-100 transition-all"

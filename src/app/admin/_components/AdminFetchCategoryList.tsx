@@ -1,17 +1,17 @@
 "use client";
 
 import Select from "react-select";
-import useCategoryList from "../../_hooks/useCategoryList";
+import useCategories from "../../_hooks/useCategories";
 
 const AdminFetchCategoryList: React.FC = () => {
-  const { categoryList } = useCategoryList();
+  const { data } = useCategories();
 
   return (
     <Select
-      defaultValue={categoryList[0]}
+      defaultValue={data.categories[0]}
       isMulti
       name="category"
-      options={categoryList}
+      options={data.categories}
     />
   );
 };

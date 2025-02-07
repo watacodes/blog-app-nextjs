@@ -12,10 +12,11 @@ import {
 } from "@mui/material";
 
 import { Controller, useFormContext } from "react-hook-form";
-import useCategoryList from "../../_hooks/useCategoryList";
+import useCategories from "../../_hooks/useCategories";
 
 const AdminCategorySelect: React.FC = () => {
-  const { categoryList } = useCategoryList();
+  const { data } = useCategories();
+  console.log(data);
   const {
     control,
     formState: { isSubmitting },
@@ -26,7 +27,7 @@ const AdminCategorySelect: React.FC = () => {
     feildOnChange: (value: { categoryId: number }[]) => void
   ) => {
     const selectedCategories = (e.target.value as []) || [];
-    const availableCatIds = categoryList.map((c) => c.id);
+    const availableCatIds = data.categories.map((c) => c.id);
     const validCatIds = selectedCategories
       .filter((id) => availableCatIds.includes(id))
       .map((id) => ({
@@ -56,7 +57,7 @@ const AdminCategorySelect: React.FC = () => {
               renderValue={(selected) => {
                 return (
                   <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                    {categoryList
+                    {data.categories
                       .filter((c) => selected.includes(c.id))
                       .map((c) => (
                         <Chip key={c.id} label={c.name} />
@@ -72,7 +73,7 @@ const AdminCategorySelect: React.FC = () => {
                 },
               }}
             >
-              {categoryList.map((c) => {
+              {data.categories.map((c) => {
                 return (
                   <MenuItem key={c.id} value={c.id}>
                     {c.name}

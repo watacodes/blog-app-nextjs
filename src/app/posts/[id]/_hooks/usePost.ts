@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { DisplayPostType } from "../../../_types/DispalyPostType";
 import { CustomError } from "../../../_types/CustomError";
 
-const useFetchPost = (id: string) => {
+const usePost = (id: string) => {
   const [post, setPost] = useState<DisplayPostType | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<CustomError | null>(null);
@@ -43,4 +43,4 @@ const useFetchPost = (id: string) => {
   return { post, isLoading, error };
 };
 
-export default useFetchPost;
+export default usePost;

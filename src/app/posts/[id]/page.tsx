@@ -6,7 +6,7 @@ import Loading from "../../_components/Loading";
 import Image from "next/image";
 import dayjs from "dayjs";
 import ErrorComponent from "../../_components/Error";
-import useFetchPost from "./_hooks/useFetchPost";
+import usePost from "./_hooks/usePost";
 
 export type Param = {
   id: string;
@@ -14,7 +14,7 @@ export type Param = {
 
 const PostDetails: React.FC = () => {
   const { id } = useParams() as Param;
-  const { post, isLoading, error } = useFetchPost(id);
+  const { post, isLoading, error } = usePost(id);
 
   if (isLoading) return <Loading />;
   if (!post) return <NotFound />;
