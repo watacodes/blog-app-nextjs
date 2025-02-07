@@ -4,14 +4,14 @@ import Select from "react-select";
 import useCategories from "../../_hooks/useCategories";
 
 const AdminFetchCategoryList: React.FC = () => {
-  const { data } = useCategories();
+  const { categories } = useCategories();
 
   return (
     <Select
-      defaultValue={data.categories[0]}
+      defaultValue={categories[0]}
       isMulti
       name="category"
-      options={data.categories}
+      options={categories}
     />
   );
 };

@@ -6,7 +6,7 @@ import useCategories from "../../../_hooks/useCategories";
 import ErrorComponent from "../../../_components/Error";
 
 const AdminCategoryList: React.FC = () => {
-  const { data, error, isLoading } = useCategories();
+  const { categories, error, isLoading } = useCategories();
 
   if (isLoading) return <Loading />;
   if (error) return <ErrorComponent error={error} />;
@@ -23,7 +23,7 @@ const AdminCategoryList: React.FC = () => {
         </Link>
       </div>
       <ul>
-        {data.categories.map((category) => {
+        {categories.map((category) => {
           return (
             <li
               className="w-full font-bold p-4 border-solid border-b-2 hover:bg-slate-100 transition-all"
