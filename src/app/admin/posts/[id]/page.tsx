@@ -5,32 +5,18 @@ import { AdminPost } from "../../_components/AdminPost";
 import { PostType } from "../../../_types/PostType";
 import { useState, useEffect } from "react";
 import Loading from "../../../_components/Loading";
+import usePostDetail from "./_hooks/usePostDetail";
+import ErrorComponent from "../../../_components/Error";
 
 const AdminPostEditPage: React.FC = () => {
   const { id } = useParams();
   const router = useRouter();
-  const [post, setPost] = useState<PostType | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { data, error, isLoading } = usePostDetail();
 
-  useEffect(() => {
-    const fetcher = async () => {
-      setIsLoading(true);
-      try {
-        const res = await fetch(`/api/admin/posts/${id}`, {
-          method: "GET",
-        });
-        const { post } = await res.json();
-        console.log("post: ", post);
-        setPost(post);
-      } catch (error) {
-        throw new Error(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  if (isLoading) return <Loading />;
+  if (error) return <ErrorComponent error={error} />;
 
-    fetcher();
-  }, [id]);
+  const { post } = data;
 
   const handleUpdate = async (post: PostType) => {
     try {
@@ -66,8 +52,6 @@ const AdminPostEditPage: React.FC = () => {
       console.log(error);
     }
   };
-
-  if (isLoading) return <Loading />;
 
   return (
     <AdminPost

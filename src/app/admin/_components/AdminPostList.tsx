@@ -12,6 +12,8 @@ const AdminPostList: React.FC = () => {
   if (isLoading) return <Loading />;
   if (error) return <ErrorComponent error={error} />;
 
+  const { posts } = data;
+
   return (
     <div className="flex flex-col w-full p-4">
       <div className="flex justify-between mb-10">
@@ -23,7 +25,7 @@ const AdminPostList: React.FC = () => {
         </Link>
       </div>
       <ul>
-        {data.posts.map((post) => {
+        {posts.map((post) => {
           const date = dayjs(post.createdAt).format("YYYY/M/D");
           return (
             <li

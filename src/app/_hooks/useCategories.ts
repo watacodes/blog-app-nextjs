@@ -6,7 +6,7 @@ const useCategories = () => {
   const URL = "/api/admin/categories";
   const { data, error, isLoading } = useSWR(URL, fetcher);
 
-  return { categories: data, isLoading, error };
+  return { data, isLoading, error };
 };
 
 export default useCategories;
