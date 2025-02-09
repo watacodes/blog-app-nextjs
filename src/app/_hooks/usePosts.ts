@@ -1,6 +1,5 @@
 import useSWR from "swr";
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+import { fetcher } from "../_utils/fetcher";
 
 const usePosts = () => {
   const URL = "/api/admin/posts";

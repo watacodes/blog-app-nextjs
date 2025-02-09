@@ -1,7 +1,6 @@
 import { useParams, useRouter } from "next/navigation";
 import useSWR from "swr";
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+import { fetcher } from "../../../../_utils/fetcher";
 
 const usePostDetail = () => {
   const { id } = useParams();
