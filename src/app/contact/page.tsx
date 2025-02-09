@@ -57,8 +57,6 @@ const ContactForm: React.FC = () => {
     }
   };
 
-  const onError = (error: FieldErrors<FormType>) => console.log(error);
-
   const resetFields = () => {
     resetField("name");
     resetField("email");
@@ -68,7 +66,7 @@ const ContactForm: React.FC = () => {
   return (
     <div className="h-screen flex justify-center max-w=[800px] mx-auto py-10">
       <form
-        onSubmit={handleSubmit(onSubmit, onError)}
+        onSubmit={handleSubmit(onSubmit)}
         className="w-[800px] m-10"
         noValidate
       >

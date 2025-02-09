@@ -1,16 +1,14 @@
 "use client";
 
 import dayjs from "dayjs";
-import { MicroCmsPost } from "@/app/_types/MicroCmsPost";
-import CategoryButton from "@/app/posts/_components/CategoryButton";
 import Link from "next/link";
+import { DisplayPostType } from "../_types/DispalyPostType";
 
 type Props = {
-  post: MicroCmsPost;
+  post: DisplayPostType;
 };
 
 const Post: React.FC<Props> = ({ post }) => {
-  console.log(post);
   const date: string = dayjs(post.createdAt).format("MM/DD/YYYY");
 
   return (
@@ -22,8 +20,15 @@ const Post: React.FC<Props> = ({ post }) => {
         <div className="flex justify-between">
           <div className="text-sm text-gray-400">{date}</div>
           <div className="flex">
-            {post.categories.map((category, idx) => {
-              return <CategoryButton key={idx} name={category.name} />;
+            {post.categories?.map((category, idx) => {
+              return (
+                <button
+                  key={idx}
+                  className="border border-blue-600 rounded-md px-2 py-1 mx-1 text-sm text-blue-600"
+                >
+                  {category.name}
+                </button>
+              );
             })}
           </div>
         </div>

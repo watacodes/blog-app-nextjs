@@ -1,81 +1,60 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { MicroCmsPost } from "@/app/_types/MicroCmsPost";
-import CategoryButton from "@/app/posts/_components/CategoryButton";
-import NotFound from "@/app/_components/NotFound";
-import Loading from "@/app/_components/Loading";
+import Loading from "../../_components/Loading";
 import Image from "next/image";
 import dayjs from "dayjs";
+import ErrorComponent from "../../_components/Error";
+import usePost from "./_hooks/usePost";
+
+export type Param = {
+  id: string;
+};
 
 const PostDetails: React.FC = () => {
-  const { id } = useParams();
-  const [post, setPost] = useState<MicroCmsPost | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { id } = useParams() as Param;
+  const { post, isLoading, error } = usePost(id);
 
-  useEffect(() => {
-    const fetcher = async () => {
-      setIsLoading(true);
-      try {
-        const res = await fetch(
-          `https://lczfym7uqu.microcms.io/api/v1/posts/${id}`,
-          {
-            headers: {
-              "X-MICROCMS-API-KEY": process.env.NEXT_PUBLIC_API_KEY as string,
-            },
-          }
-        );
-
-        if (!res.ok) {
-          throw new Error("Failed to fetch the post.");
-        }
-
-        const data: MicroCmsPost = await res.json();
-        console.log("this is the post", data);
-        setPost(data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetcher();
-  }, [id]);
+  console.log(post);
 
   if (isLoading) return <Loading />;
-  if (!post) return <NotFound />;
+  if (error) return <ErrorComponent error={error} />;
 
   const date: string = dayjs(post.createdAt).format("MM/DD/YYYY");
 
   return (
-    <div>
-      <div className="flex flex-col justify-center items-center p-2">
-        <div>
-          <div className="mt-10 mb-5">
-            <Image
-              className="h-auto max-w-full"
-              src={post.thumbnail.url}
-              width={post.thumbnail.width}
-              height={post.thumbnail.height}
-              alt="A thumbnail of the post"
-            />
-          </div>
-          <div className="p-3">
-            <div className="flex justify-between">
-              <div className="text-sm text-gray-400">{date}</div>
-              <div className="flex px-4">
-                {post.categories.map((category, idx) => {
-                  return <CategoryButton key={idx} name={category.name} />;
-                })}
-              </div>
+    <div className="flex flex-col p-2 items-center">
+      <div className="items-center w-[800px]">
+        <div className="mt-10 mb-5">
+          <Image
+            className="h-auto max-w-full"
+            src={post.thumbnailUrl}
+            width={800}
+            height={400}
+            alt="A thumbnail of the post"
+          />
+        </div>
+        <div className="p-3">
+          <div className="flex justify-between">
+            <div className="text-sm text-gray-400">{date}</div>
+            <div className="flex px-4">
+              {post.categories?.map((category, idx) => {
+                return (
+                  <button
+                    key={idx}
+                    className="border border-blue-600 rounded-md px-2 py-1 mx-1 text-sm text-blue-600"
+                  >
+                    {category.name}
+                  </button>
+                );
+              })}
             </div>
-            <h1 className="py-5 text-2xl">{post.title}</h1>
-            <div
-              className="overflow-hidden min-w-fit"
-              dangerouslySetInnerHTML={{ __html: post.content }}
-            />
           </div>
+          <h1 className="py-5 text-2xl">{post.title}</h1>
+          <div
+            className="overflow-hidden min-w-fit"
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
         </div>
       </div>
     </div>

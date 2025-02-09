@@ -1,6 +1,6 @@
 "use client";
 
-import Header from "@/app/_components/Header";
+import Header from "./_components/Header";
 import "./globals.css";
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
