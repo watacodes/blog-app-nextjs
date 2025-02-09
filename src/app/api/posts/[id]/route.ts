@@ -30,7 +30,17 @@ export const GET = async (
       },
     });
 
-    return NextResponse.json({ status: "OK", post: post }, { status: 200 });
+    const categories = post.postCategories.map((c) => ({
+      id: c.category.id,
+      name: c.category.name,
+    }));
+
+    const formattedPost = { ...post, categories };
+
+    return NextResponse.json(
+      { status: "OK", post: formattedPost },
+      { status: 200 }
+    );
   } catch (error) {
     if (error instanceof Error)
       return NextResponse.json({ status: error.message }, { status: 400 });

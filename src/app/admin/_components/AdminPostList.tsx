@@ -7,12 +7,10 @@ import ErrorComponent from "../../_components/Error";
 import usePosts from "../../_hooks/usePosts";
 
 const AdminPostList: React.FC = () => {
-  const { data, isLoading, error } = usePosts();
+  const { posts, error, isLoading } = usePosts();
 
   if (isLoading) return <Loading />;
   if (error) return <ErrorComponent error={error} />;
-
-  const { posts } = data;
 
   return (
     <div className="flex flex-col w-full p-4">

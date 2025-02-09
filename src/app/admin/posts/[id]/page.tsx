@@ -1,22 +1,16 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
+import usePostDetail from "./_hooks/usePostDetail";
 import { AdminPost } from "../../_components/AdminPost";
 import { PostType } from "../../../_types/PostType";
-import { useState, useEffect } from "react";
 import Loading from "../../../_components/Loading";
-import usePostDetail from "./_hooks/usePostDetail";
 import ErrorComponent from "../../../_components/Error";
 
 const AdminPostEditPage: React.FC = () => {
   const { id } = useParams();
   const router = useRouter();
-  const { data, error, isLoading } = usePostDetail();
-
-  if (isLoading) return <Loading />;
-  if (error) return <ErrorComponent error={error} />;
-
-  const { post } = data;
+  const { post, error, isLoading } = usePostDetail();
 
   const handleUpdate = async (post: PostType) => {
     try {
@@ -52,6 +46,9 @@ const AdminPostEditPage: React.FC = () => {
       console.log(error);
     }
   };
+
+  if (isLoading) return <Loading />;
+  if (error) return <ErrorComponent error={error} />;
 
   return (
     <AdminPost

@@ -17,16 +17,12 @@ import Loading from "../../_components/Loading";
 import ErrorComponent from "../../_components/Error";
 
 const AdminCategorySelect: React.FC = () => {
-  const { data, isLoading, error } = useCategories();
+  const { categories, error, isLoading } = useCategories();
+
   const {
     control,
     formState: { isSubmitting },
   } = useFormContext();
-
-  if (isLoading) return <Loading />;
-  if (error) return <ErrorComponent error={error} />;
-
-  const { categories } = data;
 
   const handleCategoryChange = (
     e: SelectChangeEvent<number[]>,
@@ -41,6 +37,9 @@ const AdminCategorySelect: React.FC = () => {
       }));
     feildOnChange(validCatIds);
   };
+
+  if (isLoading) return <Loading />;
+  if (error) return <ErrorComponent error={error} />;
 
   return (
     <div className="flex flex-col">

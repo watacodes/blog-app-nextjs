@@ -3,9 +3,15 @@ import { fetcher } from "../_utils/fetcher";
 
 const usePosts = () => {
   const URL = "/api/admin/posts";
-  const { data, error, isLoading } = useSWR(URL, fetcher);
+  const { data, error, isLoading } = useSWR(URL, fetcher, {
+    fallbackData: { posts: [] },
+  });
 
-  return { data, isLoading, error };
+  console.log(data);
+
+  const posts = data.posts;
+
+  return { posts, error, isLoading };
 };
 
 export default usePosts;

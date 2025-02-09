@@ -7,12 +7,10 @@ import ErrorComponent from "./_components/Error";
 import usePostList from "./_hooks/usePostList";
 
 const Posts: React.FC = () => {
-  const { data, error, isLoading } = usePostList();
+  const { posts, error, isLoading } = usePostList();
 
   if (isLoading) return <Loading />;
   if (error) return <ErrorComponent error={error} />;
-
-  const { posts } = data;
 
   return (
     <div className="w-screen h-svh flex flex-col items-center pt-10">

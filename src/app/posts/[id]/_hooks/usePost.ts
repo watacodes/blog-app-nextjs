@@ -1,30 +1,14 @@
 import useSWR from "swr";
-
-const fetcher = async (url: string) => {
-  try {
-    const res = await fetch(url);
-    if (!res.ok) {
-      throw new Error("failed to fetch post");
-    } else {
-      const result = await res.json();
-      const formattedPost = {
-        ...result.post,
-        categories: result.post.postCategories.map((cat) => ({
-          id: cat.category.id,
-          name: cat.category.name,
-        })),
-      };
-      return formattedPost;
-    }
-  } catch (e) {
-    console.error(e);
-  }
-};
+import { fetcher } from "../../../_utils/fetcher";
 
 const usePost = (id: string) => {
-  const { data, error, isLoading } = useSWR(`/api/posts/${id}`, fetcher);
+  const URL = `/api/posts/${id}`;
+  const { data, error, isLoading } = useSWR(URL, fetcher, {
+    fallbackData: { post: [] },
+  });
+  const post = data.post;
 
-  return { post: data, isLoading, error };
+  return { post, error, isLoading };
 };
 
 export default usePost;

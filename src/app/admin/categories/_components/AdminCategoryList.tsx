@@ -6,12 +6,10 @@ import useCategories from "../../../_hooks/useCategories";
 import ErrorComponent from "../../../_components/Error";
 
 const AdminCategoryList: React.FC = () => {
-  const { data, error, isLoading } = useCategories();
+  const { categories, error, isLoading } = useCategories();
 
   if (isLoading) return <Loading />;
   if (error) return <ErrorComponent error={error} />;
-
-  const { categories } = data;
 
   return (
     <div className="flex flex-col w-full p-4">

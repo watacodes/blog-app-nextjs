@@ -16,6 +16,7 @@ const PostDetails: React.FC = () => {
   const { post, isLoading, error } = usePost(id);
 
   console.log(post);
+
   if (isLoading) return <Loading />;
   if (error) return <ErrorComponent error={error} />;
 
@@ -37,7 +38,7 @@ const PostDetails: React.FC = () => {
           <div className="flex justify-between">
             <div className="text-sm text-gray-400">{date}</div>
             <div className="flex px-4">
-              {post.categories.map((category, idx) => {
+              {post.categories?.map((category, idx) => {
                 return (
                   <button
                     key={idx}

@@ -6,11 +6,10 @@ import Loading from "../../_components/Loading";
 import ErrorComponent from "../../_components/Error";
 
 const AdminFetchCategoryList: React.FC = () => {
-  const { data, error, isLoading } = useCategories();
+  const { categories, error, isLoading } = useCategories();
+
   if (isLoading) return <Loading />;
   if (error) return <ErrorComponent error={error} />;
-
-  const { categories } = data;
 
   return (
     <Select
