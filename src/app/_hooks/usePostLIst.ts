@@ -3,11 +3,9 @@ import { fetcher } from "../_utils/fetcher";
 
 const usePostList = () => {
   const URL = "/api/posts";
-  const { data, error, isLoading } = useSWR(URL, fetcher, {
-    fallbackData: { posts: [] },
-  });
+  const { data, error, isLoading } = useSWR(URL, fetcher);
 
-  const posts = data.posts;
+  const posts = data?.posts;
 
   return { posts, error, isLoading };
 };
