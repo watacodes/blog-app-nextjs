@@ -15,8 +15,6 @@ const PostDetails: React.FC = () => {
   const { id } = useParams() as Param;
   const { post, isLoading, error } = usePost(id);
 
-  console.log(post);
-
   if (isLoading) return <Loading />;
   if (error) return <ErrorComponent error={error} />;
 

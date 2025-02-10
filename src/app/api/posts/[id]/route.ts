@@ -37,6 +37,8 @@ export const GET = async (
 
     const formattedPost = { ...post, categories };
 
+    console.log("formatted: ", formattedPost);
+
     return NextResponse.json(
       { status: "OK", post: formattedPost },
       { status: 200 }

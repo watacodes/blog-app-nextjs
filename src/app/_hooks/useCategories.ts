@@ -5,7 +5,9 @@ const useCategories = () => {
   const URL = "/api/admin/categories";
   const { data, error, isLoading } = useSWR(URL, fetcher);
 
-  const categories = data?.categories || [];
+  console.log(data);
+
+  const categories = data?.categories ?? [];
 
   return { categories, error, isLoading };
 };
