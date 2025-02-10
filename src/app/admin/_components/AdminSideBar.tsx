@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 type MenuItemProps = {
   href: string;
@@ -8,9 +9,17 @@ type MenuItemProps = {
 };
 
 const MenuItem: React.FC<MenuItemProps> = ({ children, href }) => {
+  const pathname = usePathname();
+  const isSelected = (href: string) => pathname.includes(href);
+
   return (
-    <li className="py-8 px-2 hover:bg-slate-300 transition-all">
-      <Link href={href} className="p-4">
+    <li>
+      <Link
+        href={href}
+        className={`p-4 block hover:bg-blue-100 ${
+          isSelected("/admin/posts") && "bg-blue-100"
+        }`}
+      >
         {children}
       </Link>
     </li>
