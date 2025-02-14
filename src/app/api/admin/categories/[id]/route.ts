@@ -2,6 +2,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import { supabase } from "../../../../../_utils/supabase";
 
 const prisma = new PrismaClient();
 
@@ -10,7 +11,13 @@ export const GET = async (
   { params }: { params: { id: string } }
 ) => {
   const { id } = params;
+  const token = request.headers.get("Authorization") ?? "";
+  const { error } = await supabase.auth.getUser(token);
 
+  if (error) {
+    console.log(error);
+    return NextResponse.json({ status: error.message }, { status: 400 });
+  }
   try {
     const data = await prisma.category.findUnique({
       where: {

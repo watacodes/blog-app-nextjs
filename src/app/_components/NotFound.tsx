@@ -1,7 +1,11 @@
 "use client";
 
 const NotFound: React.FC = () => {
-  return <div>Oops, the post is unavailable.</div>;
+  return (
+    <div className="flex items-center justify-center h-screen">
+      Oops, posts are unavailable.
+    </div>
+  );
 };
 
 export default NotFound;

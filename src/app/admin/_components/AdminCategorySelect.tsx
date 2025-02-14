@@ -25,7 +25,7 @@ const AdminCategorySelect: React.FC = () => {
   } = useFormContext();
 
   if (isLoading) return <Loading />;
-  if (error) return <ErrorComponent error={error} />;
+  // if (error) return <ErrorComponent error={error} />;
 
   const handleCategoryChange = (
     e: SelectChangeEvent<number[]>,
@@ -46,7 +46,6 @@ const AdminCategorySelect: React.FC = () => {
   return (
     <div className="flex flex-col">
       <InputLabel id="postCategories">カテゴリー</InputLabel>
-
       <FormControl fullWidth margin="normal">
         <Controller
           name="postCategories"
@@ -62,7 +61,6 @@ const AdminCategorySelect: React.FC = () => {
               onChange={(e) => handleCategoryChange(e, field.onChange)}
               input={<OutlinedInput id="select-multiple-chip" />}
               renderValue={(selected) => {
-                console.log("selected: ", selected);
                 return (
                   <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                     {categories
@@ -75,10 +73,6 @@ const AdminCategorySelect: React.FC = () => {
               }}
             >
               {categories.map((c) => {
-                console.log("cat: ", categories);
-                console.log("c: ", c);
-                console.log("c item: ", c.name);
-
                 return (
                   <MenuItem key={c.id} value={c.id}>
                     {c.name}

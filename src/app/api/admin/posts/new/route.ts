@@ -2,16 +2,26 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import { supabase } from "../../../../../_utils/supabase";
 
 const prisma = new PrismaClient();
 
 export const POST = async (request: NextRequest) => {
+  const token = request.headers.get("Authorization") ?? "";
+
+  const { error } = await supabase.auth.getUser(token);
+
+  if (error) {
+    console.log(error);
+    return NextResponse.json({ status: error.message }, { status: 400 });
+  }
+
   try {
     const body = await request.json();
-    const { title, content, thumbnailUrl, postCategories } = body;
+    const { title, content, thumbnailImageKey, postCategories } = body;
 
     const post = await prisma.post.create({
-      data: { title, content, thumbnailUrl },
+      data: { title, content, thumbnailImageKey },
     });
 
     const categoryIds = postCategories.map((c) => c.categoryId);
@@ -24,6 +34,7 @@ export const POST = async (request: NextRequest) => {
         },
       });
     }
+
     return NextResponse.json({ status: "OK", post: post }, { status: 200 });
   } catch (error) {
     if (error instanceof Error)

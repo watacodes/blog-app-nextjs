@@ -48,13 +48,13 @@ export const GET = async (request: NextRequest) => {
 export const PUT = async (request: NextRequest) => {
   try {
     const body = await request.json();
-    const { title, content, postCategories, thumbnailUrl } = body;
+    const { title, content, postCategories, thumbnailImageKey } = body;
 
     const data = await prisma.post.create({
       data: {
         title,
         content,
-        thumbnailUrl,
+        thumbnailImageKey,
       },
     });
 

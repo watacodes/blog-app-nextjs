@@ -2,8 +2,10 @@
 
 import { useRouter } from "next/navigation";
 import CategoryEditForm from "../_components/AdminCategoryEditForm";
+import useSupabaseSession from "../../../_hooks/useSupabaseSession";
 
 const Page: React.FC = () => {
+  const { token } = useSupabaseSession();
   const router = useRouter();
 
   const onSubmit = async (category) => {
@@ -12,12 +14,12 @@ const Page: React.FC = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: token,
         },
         body: JSON.stringify(category),
       });
 
       const result = await res.json();
-      console.log("Category: ", result);
       router.push("/admin/categories");
     } catch (error) {
       throw new Error("POST request failed.");

@@ -25,6 +25,7 @@
     "react-select": "^5.10.0",
     "sqlite3": "^5.1.7",
     "swr": "^2.3.2",
+    "uuid": "^11.0.5",
     "yup": "^1.6.1"
   },
   "devDependencies": {
