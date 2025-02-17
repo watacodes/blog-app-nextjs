@@ -53,7 +53,6 @@ const FileUploader: React.FC<Props> = ({
     fieldOnChange: (value: string) => void
   ) => {
     const dataPath = await handleImageChange(e);
-    console.log(dataPath);
     setThumbnailImageKey(dataPath);
     fieldOnChange(dataPath);
   };

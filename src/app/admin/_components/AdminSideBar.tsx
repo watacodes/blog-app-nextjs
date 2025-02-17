@@ -13,9 +13,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ children, href, isSelected }) => {
   return (
     <Link
       href={href}
-      className={`p-4 block hover:bg-blue-100 ${
-        isSelected(href) && "bg-blue-100"
-      }`}
+      className={`p-4 hover:bg-blue-100 ${isSelected(href) && "bg-blue-100"}`}
     >
       {children}
     </Link>
@@ -27,7 +25,7 @@ const AdminSideBar: React.FC = () => {
   const isSelected = (href: string) => pathname.includes(href);
 
   return (
-    <aside className="fixed bg-gray-100 w-[280px] left-0 bottom-0 top-[72px]">
+    <aside className="flex flex-col w-[280px] bg-gray-100">
       <MenuItem href="/admin/posts" isSelected={isSelected}>
         記事一覧
       </MenuItem>

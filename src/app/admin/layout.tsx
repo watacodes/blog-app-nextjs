@@ -9,7 +9,7 @@ const AdminLayout: React.FC = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="flex flex-1">
       <AdminSideBar />
-      <div className="ml-[280px] p-8 w-full">{children}</div>
+      <div className="p-8 w-full">{children}</div>
     </div>
   );
 };
