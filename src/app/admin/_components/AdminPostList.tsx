@@ -17,12 +17,12 @@ const AdminPostList: React.FC = () => {
   }, [token]);
 
   if (isLoading) return <Loading />;
-  // if (error) return <ErrorComponent error={error} />;
+  if (error) return <ErrorComponent error={error} />;
 
   return (
     <div className="flex flex-col w-full">
       <div className="flex w-full justify-between mb-10">
-        <h2 className="font-bold text-xl">記事一覧</h2>
+        <h2 className="flex items-center font-bold text-xl">記事一覧</h2>
         <Link href="/admin/posts/new">
           <button className="text-white bg-blue-600 rounded-sm px-3 py-1 text-md">
             新規作成

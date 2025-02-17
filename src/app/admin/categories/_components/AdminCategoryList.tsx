@@ -19,7 +19,7 @@ const AdminCategoryList: React.FC = () => {
   if (error) return <ErrorComponent error={error} />;
 
   return (
-    <div className="flex flex-col w-full p-2">
+    <div className="flex flex-col w-full">
       <div className="flex justify-between mb-10">
         <h2 className="font-bold text-xl">カテゴリー一覧</h2>
 
