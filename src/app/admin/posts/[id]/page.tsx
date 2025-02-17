@@ -1,16 +1,19 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import usePostDetail from "./_hooks/usePostDetail";
+import useAdminPostDetail from "./_hooks/useAdminPostDetail";
 import { AdminPost } from "../../_components/AdminPost";
 import { PostType } from "../../../_types/PostType";
 import Loading from "../../../_components/Loading";
 import ErrorComponent from "../../../_components/Error";
+import useSupabaseSession from "../../../_hooks/useSupabaseSession";
 
 const AdminPostEditPage: React.FC = () => {
   const { id } = useParams();
   const router = useRouter();
-  const { post, error, isLoading } = usePostDetail();
+  const { token } = useSupabaseSession();
+
+  const { post, error, isLoading } = useAdminPostDetail();
 
   const handleUpdate = async (post: PostType) => {
     try {
@@ -18,6 +21,7 @@ const AdminPostEditPage: React.FC = () => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: token,
         },
         body: JSON.stringify(post),
       });
@@ -35,6 +39,10 @@ const AdminPostEditPage: React.FC = () => {
     try {
       const res = await fetch(`/api/admin/posts/${id}`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
       });
 
       if (res.ok) {

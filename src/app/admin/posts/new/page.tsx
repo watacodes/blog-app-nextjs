@@ -6,8 +6,10 @@ import { PostType } from "../../../_types/PostType";
 import { CustomError } from "../../../_types/CustomError";
 import { useState } from "react";
 import ErrorComponent from "../../../_components/Error";
+import useSupabaseSession from "../../../_hooks/useSupabaseSession";
 
 const NewPostPage: React.FC = () => {
+  const { token } = useSupabaseSession();
   const router = useRouter();
   const [error, isError] = useState<CustomError | null>(null);
 
@@ -17,6 +19,7 @@ const NewPostPage: React.FC = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: token,
         },
         body: JSON.stringify(post),
       });

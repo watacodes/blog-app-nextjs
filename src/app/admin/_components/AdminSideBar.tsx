@@ -1,28 +1,38 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 type MenuItemProps = {
   href: string;
   children: React.ReactNode;
+  isSelected: (path: string) => boolean;
 };
 
-const MenuItem: React.FC<MenuItemProps> = ({ children, href }) => {
+const MenuItem: React.FC<MenuItemProps> = ({ children, href, isSelected }) => {
   return (
-    <li className="py-8 px-2 hover:bg-slate-300 transition-all">
-      <Link href={href} className="p-4">
-        {children}
-      </Link>
-    </li>
+    <Link
+      href={href}
+      className={`p-4 hover:bg-blue-100 ${isSelected(href) && "bg-blue-100"}`}
+    >
+      {children}
+    </Link>
   );
 };
 
 const AdminSideBar: React.FC = () => {
+  const pathname = usePathname();
+  const isSelected = (href: string) => pathname.includes(href);
+
   return (
-    <ul className="w-1/5 h-screen bg-gray-200 flex flex-col">
-      <MenuItem href="/admin/posts">記事一覧</MenuItem>
-      <MenuItem href="/admin/categories">カテゴリー一覧</MenuItem>
-    </ul>
+    <aside className="flex flex-col w-[280px] bg-gray-100">
+      <MenuItem href="/admin/posts" isSelected={isSelected}>
+        記事一覧
+      </MenuItem>
+      <MenuItem href="/admin/categories" isSelected={isSelected}>
+        カテゴリー一覧
+      </MenuItem>
+    </aside>
   );
 };
 

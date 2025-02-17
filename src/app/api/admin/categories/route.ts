@@ -2,10 +2,20 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import { supabase } from "../../../../_utils/supabase";
 
 const prisma = new PrismaClient();
 
-export const GET = async () => {
+export const GET = async (request: NextRequest) => {
+  const token = request.headers.get("Authorization") ?? "";
+
+  const { error } = await supabase.auth.getUser(token);
+
+  if (error) {
+    console.log(error);
+    return NextResponse.json({ status: error.message }, { status: 400 });
+  }
+
   try {
     const categories = await prisma.category.findMany({
       select: { name: true, id: true },
@@ -27,9 +37,16 @@ export const GET = async () => {
 // POST /api/admin/categories
 
 export const POST = async (request: NextRequest) => {
+  const token = request.headers.get("Authorization") ?? "";
+  const { error } = await supabase.auth.getUser(token);
+
+  if (error) {
+    console.log(error);
+    return NextResponse.json({ status: error.message }, { status: 400 });
+  }
+
   try {
     const body = await request.json();
-    console.log("Body: ", body);
     const { category } = body;
 
     const findExistingCategory = await prisma.category.findFirst({
