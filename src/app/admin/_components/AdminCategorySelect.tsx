@@ -14,10 +14,9 @@ import {
 import { Controller, useFormContext } from "react-hook-form";
 import useCategories from "../../_hooks/useCategories";
 import Loading from "../../_components/Loading";
-import ErrorComponent from "../../_components/Error";
 
 const AdminCategorySelect: React.FC = () => {
-  const { categories, error, isLoading } = useCategories();
+  const { categories, isLoading } = useCategories();
 
   const {
     control,
@@ -25,7 +24,6 @@ const AdminCategorySelect: React.FC = () => {
   } = useFormContext();
 
   if (isLoading) return <Loading />;
-  // if (error) return <ErrorComponent error={error} />;
 
   const handleCategoryChange = (
     e: SelectChangeEvent<number[]>,

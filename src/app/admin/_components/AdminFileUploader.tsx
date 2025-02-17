@@ -1,4 +1,4 @@
-import { InputLabel, FormControl, inputAdornmentClasses } from "@mui/material";
+import { InputLabel, FormControl } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 import { supabase } from "../../../_utils/supabase";
@@ -21,17 +21,16 @@ const FileUploader: React.FC<Props> = ({
   );
 
   const {
-    register,
     control,
     formState: { isSubmitting },
   } = useFormContext();
 
   const handleImageChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement>
   ): Promise<string> => {
-    if (!event.target.files || event.target.files.length === 0) return;
+    if (!e.target.files || e.target.files.length === 0) return;
 
-    const file = event.target.files[0];
+    const file = e.target.files[0];
     const filePath = `private/${uuidv4()}`;
 
     const { data, error } = await supabase.storage
@@ -46,10 +45,16 @@ const FileUploader: React.FC<Props> = ({
       return;
     }
 
-    console.log("file path:", filePath);
-    console.log("data path: ", data.path);
-
     setThumbnailImageKey(data.path);
+
+    return data.path;
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    async (e) => {
+      const dataPath = await handleImageChange(e);
+      return dataPath;
+    };
   };
 
   useEffect(() => {
@@ -61,13 +66,12 @@ const FileUploader: React.FC<Props> = ({
       } = await supabase.storage
         .from("post_thumbnail")
         .getPublicUrl(thumbnailImageKey);
-      console.log("public url: ", publicUrl);
 
       setThumbnailImageUrl(publicUrl);
     };
 
     fetcher();
-  }, [thumbnailImageKey]);
+  }, [thumbnailImageKey, setThumbnailImageUrl]);
 
   return (
     <>
@@ -76,12 +80,13 @@ const FileUploader: React.FC<Props> = ({
         <Controller
           name={labelName}
           control={control}
-          render={() => (
+          render={({ field: { onChange, ref, value, ...restField } }) => (
             <input
-              {...register(labelName)}
+              {...restField}
               type="file"
+              ref={ref}
               id={labelName}
-              onChange={(e) => handleImageChange(e)}
+              onChange={handleFileChange}
               disabled={isSubmitting}
               accept="/image/*"
             />

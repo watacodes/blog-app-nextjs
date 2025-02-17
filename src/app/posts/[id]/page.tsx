@@ -20,39 +20,42 @@ const PostDetails: React.FC = () => {
     null
   );
 
-  console.log(post);
-  // useEffect(() => {
-  //   if (!thumbnailImageKey) return;
+  useEffect(() => {
+    if (!post) return;
+    if (!post.thumbnailImageKey) return;
 
-  //   const fetcher = async () => {
-  //     const {
-  //       data: { publicUrl },
-  //     } = await supabase.storage
-  //       .from("post_thumbnail")
-  //       .getPublicUrl(thumbnailImageKey);
-  //     console.log("public url: ", publicUrl);
+    const fetcher = async () => {
+      const {
+        data: { publicUrl },
+      } = await supabase.storage
+        .from("post_thumbnail")
+        .getPublicUrl(post.thumbnailImageKey);
 
-  //     setThumbnailImageUrl(publicUrl);
-  //   };
+      setThumbnailImageUrl(publicUrl);
+      console.log("rendered url: ", publicUrl);
+    };
 
-  //   fetcher();
-  // }, [thumbnailImageKey]);
+    fetcher();
+  }, [post]);
 
   if (isLoading) return <Loading />;
   if (error) return <ErrorComponent error={error} />;
+
   const date: string = dayjs(post.createdAt).format("MM/DD/YYYY");
 
   return (
     <div className="flex flex-col p-2 items-center">
       <div className="items-center w-[800px]">
         <div className="mt-10 mb-5">
-          {/* <Image
-            className="h-auto max-w-full"
-            src={post.thumbnailImageKey}
-            width={800}
-            height={400}
-            alt="A thumbnail of the post"
-          /> */}
+          {thumbnailImageUrl && (
+            <Image
+              className="h-auto max-w-full"
+              src={thumbnailImageUrl}
+              width={800}
+              height={400}
+              alt="A thumbnail of the post"
+            />
+          )}
         </div>
         <div className="p-3">
           <div className="flex justify-between">

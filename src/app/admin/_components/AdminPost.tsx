@@ -6,12 +6,10 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { PostType } from "../../_types/PostType";
 import CustomTextField from "../../_components/CustomTextField";
-import { supabase } from "../../../_utils/supabase";
-import { v4 as uuidv4 } from "uuid";
 import Image from "next/image";
 import { DisplayPostType } from "../../_types/DisplayPostType";
-import AdminCategorySelect from "./AdminCategorySelect";
 import FileUploader from "./AdminFileUploader";
+import AdminCategorySelect from "./AdminCategorySelect";
 
 type Props = {
   initialPostData?: PostType & DisplayPostType;
@@ -38,6 +36,7 @@ export const AdminPost: React.FC<Props> = ({
   const [thumbnailImageUrl, setThumbnailImageUrl] = useState<string | null>(
     null
   );
+
   const methods = useForm({
     resolver: yupResolver(schema) as any,
     mode: "onSubmit",
