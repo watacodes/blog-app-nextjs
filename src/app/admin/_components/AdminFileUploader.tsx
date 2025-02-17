@@ -45,16 +45,17 @@ const FileUploader: React.FC<Props> = ({
       return;
     }
 
-    setThumbnailImageKey(data.path);
-
     return data.path;
   };
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    async (e) => {
-      const dataPath = await handleImageChange(e);
-      return dataPath;
-    };
+  const handleFileChange = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    fieldOnChange: (value: string) => void
+  ) => {
+    const dataPath = await handleImageChange(e);
+    console.log(dataPath);
+    setThumbnailImageKey(dataPath);
+    fieldOnChange(dataPath);
   };
 
   useEffect(() => {
@@ -66,7 +67,6 @@ const FileUploader: React.FC<Props> = ({
       } = await supabase.storage
         .from("post_thumbnail")
         .getPublicUrl(thumbnailImageKey);
-
       setThumbnailImageUrl(publicUrl);
     };
 
@@ -86,7 +86,7 @@ const FileUploader: React.FC<Props> = ({
               type="file"
               ref={ref}
               id={labelName}
-              onChange={handleFileChange}
+              onChange={(e) => handleFileChange(e, onChange)}
               disabled={isSubmitting}
               accept="/image/*"
             />
