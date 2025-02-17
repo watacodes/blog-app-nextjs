@@ -1,15 +1,11 @@
 "use client";
 
 import { supabase } from "../../_utils/supabase";
-import { useState } from "react";
-import AuthForm from "../_components/AuthForm";
+import AuthForm, { schemaType } from "../_components/AuthForm";
 
 const SignUpPage: React.FC = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-
-  const handleCreateAccount = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleCreateAccount = async (data: schemaType) => {
+    const { email, password } = data;
 
     const { error } = await supabase.auth.signUp({
       email,
@@ -22,22 +18,11 @@ const SignUpPage: React.FC = () => {
     if (error) {
       alert("登録に失敗しました。");
     } else {
-      setEmail("");
-      setPassword("");
       alert("確認メールを送信しました。");
     }
   };
 
-  return (
-    <AuthForm
-      handleSubmit={handleCreateAccount}
-      mode="signup"
-      email={email}
-      setEmail={setEmail}
-      password={password}
-      setPassword={setPassword}
-    />
-  );
+  return <AuthForm onSubmit={handleCreateAccount} mode="signup" />;
 };
 
 export default SignUpPage;

@@ -1,17 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import AuthForm from "../_components/AuthForm";
+import AuthForm, { schemaType } from "../_components/AuthForm";
 import { supabase } from "../../_utils/supabase";
 import { useRouter } from "next/navigation";
 
 const LoginPage: React.FC = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
   const router = useRouter();
 
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleLogin = async (data: schemaType) => {
+    const { email, password } = data;
 
     const { error } = await supabase.auth.signInWithPassword({
       email,
@@ -25,16 +22,7 @@ const LoginPage: React.FC = () => {
     }
   };
 
-  return (
-    <AuthForm
-      handleSubmit={handleLogin}
-      mode="login"
-      email={email}
-      setEmail={setEmail}
-      password={password}
-      setPassword={setPassword}
-    />
-  );
+  return <AuthForm onSubmit={handleLogin} mode="login" />;
 };
 
 export default LoginPage;

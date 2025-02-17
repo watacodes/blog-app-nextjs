@@ -2,8 +2,17 @@ import { FetcherProps } from "../_types/FetcherProps";
 import { PostResponse } from "./../_types/PostResponse";
 import useSWR from "swr";
 
-const fetcher = <T>({ url }: FetcherProps): Promise<T> =>
-  fetch(url).then((res) => res.json());
+const fetcher = async <T>({ url }: FetcherProps): Promise<T> => {
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+
+    console.log("fetched: ", data);
+    return data;
+  } catch (error) {
+    throw new Error("Failed to fetch posts");
+  }
+};
 
 const usePostList = () => {
   const URL = "/api/posts";

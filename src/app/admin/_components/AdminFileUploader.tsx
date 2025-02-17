@@ -1,3 +1,5 @@
+"use client";
+
 import { InputLabel, FormControl } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
