@@ -24,7 +24,7 @@ const CustomTextField: React.FC<Props> = ({ labelName, children, rows }) => {
         margin="normal"
         multiline={rows ? true : false}
         rows={rows}
-        sx={{ mb: 4 }}
+        sx={{ mb: 2 }}
         disabled={isSubmitting}
         helperText={errors.labelName?.message.toString()}
       />

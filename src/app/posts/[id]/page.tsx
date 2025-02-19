@@ -1,21 +1,42 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
+import usePost from "./_hooks/usePost";
 import Loading from "../../_components/Loading";
 import Image from "next/image";
 import dayjs from "dayjs";
 import ErrorComponent from "../../_components/Error";
-import usePost from "./_hooks/usePost";
+import { supabase } from "../../../_utils/supabase";
 
-export type Param = {
+type Param = {
   id: string;
 };
 
 const PostDetails: React.FC = () => {
   const { id } = useParams() as Param;
   const { post, isLoading, error } = usePost(id);
+  const [thumbnailImageUrl, setThumbnailImageUrl] = useState<string | null>(
+    null
+  );
 
-  console.log(post);
+  useEffect(() => {
+    if (!post) return;
+    if (!post.thumbnailImageKey) return;
+
+    const fetcher = async () => {
+      const {
+        data: { publicUrl },
+      } = await supabase.storage
+        .from("post_thumbnail")
+        .getPublicUrl(post.thumbnailImageKey);
+
+      setThumbnailImageUrl(publicUrl);
+      console.log("rendered url: ", publicUrl);
+    };
+
+    fetcher();
+  }, [post]);
 
   if (isLoading) return <Loading />;
   if (error) return <ErrorComponent error={error} />;
@@ -26,19 +47,21 @@ const PostDetails: React.FC = () => {
     <div className="flex flex-col p-2 items-center">
       <div className="items-center w-[800px]">
         <div className="mt-10 mb-5">
-          <Image
-            className="h-auto max-w-full"
-            src={post.thumbnailUrl}
-            width={800}
-            height={400}
-            alt="A thumbnail of the post"
-          />
+          {thumbnailImageUrl && (
+            <Image
+              className="h-auto max-w-full"
+              src={thumbnailImageUrl}
+              width={800}
+              height={400}
+              alt="A thumbnail of the post"
+            />
+          )}
         </div>
         <div className="p-3">
           <div className="flex justify-between">
             <div className="text-sm text-gray-400">{date}</div>
             <div className="flex px-4">
-              {post.categories?.map((category, idx) => {
+              {post.categories.map((category, idx) => {
                 return (
                   <button
                     key={idx}

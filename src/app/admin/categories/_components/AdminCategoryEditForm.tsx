@@ -3,7 +3,7 @@
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { CategoryFormData, CategoryType } from "../types/types";
+import { CategoryFormData, CategoryType } from "../types/CategoryResponse";
 import Buttons from "./Buttons";
 import { useEffect, useState } from "react";
 import Loading from "../../../_components/Loading";

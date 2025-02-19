@@ -1,15 +1,15 @@
+"use client";
+
 import useSWR from "swr";
-import { fetcher } from "../_utils/fetcher";
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const usePostList = () => {
-  const URL = "/api/posts";
-  const { data, error, isLoading } = useSWR(URL, fetcher, {
-    fallbackData: { posts: [] },
-  });
+  const { data, error, isLoading } = useSWR("/api/posts", fetcher);
 
-  const posts = data.posts;
+  const posts = data?.posts || [];
 
-  return { posts, error, isLoading };
+  return { posts, isLoading, error };
 };
 
 export default usePostList;
