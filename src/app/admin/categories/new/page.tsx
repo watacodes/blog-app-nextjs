@@ -2,12 +2,12 @@
 
 import { useRouter } from "next/navigation";
 import CategoryEditForm from "../_components/AdminCategoryEditForm";
-import useSupabaseSession from "../../../_hooks/useSupabaseSession";
 import { api } from "../../../_utils/api";
+import useSupabaseSession from "../../../_hooks/useSupabaseSession";
 
 const Page: React.FC = () => {
-  const { token } = useSupabaseSession();
   const router = useRouter();
+  const { token } = useSupabaseSession();
 
   const onSubmit = async (category) => {
     try {

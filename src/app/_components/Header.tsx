@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import useSupabaseSession from "../_hooks/useSupabaseSession";
 import { supabase } from "../../_utils/supabase";
-import { useEffect, useState } from "react";
 
 type HeaderProps = {
   href: string;
@@ -56,6 +55,7 @@ const Header: React.FC = () => {
   return (
     <header className="bg-gray-800 text-white p-6 font-bold flex justify-between items-center">
       <HeaderItem href="/">Blog</HeaderItem>
+
       {!isLoading && (
         <div className="flex items-center gap-4">
           {session ? <UserNavItems /> : <PublicNavItems />}
