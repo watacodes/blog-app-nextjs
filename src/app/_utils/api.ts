@@ -1,12 +1,34 @@
+import { supabase } from "../../_utils/supabase";
 import { FetcherProps } from "./../_types/FetcherProps";
 
+const getAccessToken = async () => {
+  const { data, error } = await supabase.auth.getSession();
+  return data.session.access_token;
+};
+
 export const api = {
-  async put<T>({ url, token, body }: FetcherProps): Promise<T> {
+  async get<T>({ url }: FetcherProps): Promise<T> {
+    const res = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: await getAccessToken(),
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to update.");
+    }
+
+    return res.json();
+  },
+
+  async put<T>({ url, body }: FetcherProps): Promise<T> {
     const res = await fetch(url, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization: token,
+        Authorization: await getAccessToken(),
       },
       body: JSON.stringify(body),
     });
@@ -18,12 +40,12 @@ export const api = {
     return res.json();
   },
 
-  async post<T>({ url, token, body }: FetcherProps): Promise<T> {
+  async post<T>({ url, body }: FetcherProps): Promise<T> {
     const res = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: token,
+        Authorization: await getAccessToken(),
       },
       body: JSON.stringify(body),
     });
@@ -35,12 +57,12 @@ export const api = {
     return res.json();
   },
 
-  async delete<T>({ url, token }: FetcherProps): Promise<T> {
+  async delete<T>({ url }: FetcherProps): Promise<T> {
     const res = await fetch(url, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        Authorization: token,
+        Authorization: await getAccessToken(),
       },
     });
 
