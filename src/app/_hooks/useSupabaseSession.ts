@@ -16,9 +16,10 @@ const useSupabaseSession = () => {
       } = await supabase.auth.getSession();
 
       setSession(session);
-      setToken(session?.access_token || null); // token = JSON Web Token
+      setToken(session?.access_token || null);
       setIsLoading(false);
     };
+
     fetcher();
   }, []);
 

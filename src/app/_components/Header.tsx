@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import useSupabaseSession from "../_hooks/useSupabaseSession";
 import { supabase } from "../../_utils/supabase";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 type HeaderProps = {
   href: string;
@@ -24,8 +24,33 @@ const Header: React.FC = () => {
   const router = useRouter();
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.replace("/");
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      console.error("Sign out error: ", error);
+      return;
+    }
+
+    router.push("/");
+    router.refresh();
+  };
+
+  const UserNavItems: React.FC = () => {
+    return (
+      <>
+        <HeaderItem href="/admin">管理画面</HeaderItem>
+        <button onClick={handleLogout}>ログアウト</button>
+      </>
+    );
+  };
+
+  const PublicNavItems: React.FC = () => {
+    return (
+      <>
+        <HeaderItem href="/contact">お問い合わせ</HeaderItem>
+        <HeaderItem href="/login">ログイン</HeaderItem>
+      </>
+    );
   };
 
   return (
@@ -33,17 +58,7 @@ const Header: React.FC = () => {
       <HeaderItem href="/">Blog</HeaderItem>
       {!isLoading && (
         <div className="flex items-center gap-4">
-          {session ? (
-            <>
-              <HeaderItem href="/admin">管理画面</HeaderItem>
-              <button onClick={handleLogout}>ログアウト</button>
-            </>
-          ) : (
-            <>
-              <HeaderItem href="/contact">お問い合わせ</HeaderItem>
-              <HeaderItem href="/login">ログイン</HeaderItem>
-            </>
-          )}
+          {session ? <UserNavItems /> : <PublicNavItems />}
         </div>
       )}
     </header>

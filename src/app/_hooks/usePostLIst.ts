@@ -1,8 +1,11 @@
-import { PostResponse } from "./../_types/PostResponse";
-import useFetch from "./useFetch";
+"use client";
+
+import useSWR from "swr";
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const usePostList = () => {
-  const { data, error, isLoading } = useFetch<PostResponse>("/api/posts");
+  const { data, error, isLoading } = useSWR("/api/posts", fetcher);
 
   const posts = data?.posts || [];
 

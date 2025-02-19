@@ -17,6 +17,7 @@ export const api = {
 
     return res.json();
   },
+
   async post<T>({ url, token, body }: FetcherProps): Promise<T> {
     const res = await fetch(url, {
       method: "POST",

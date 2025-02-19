@@ -1,4 +1,4 @@
-import { FieldError, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { SchemaType } from "./AuthForm";
 import React from "react";
 

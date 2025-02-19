@@ -1,5 +1,3 @@
-"use client";
-
 import { FetcherProps } from "./../_types/FetcherProps";
 
 export const fetcher = async <T>({ url, token }: FetcherProps): Promise<T> => {

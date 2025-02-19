@@ -13,6 +13,7 @@ const NewPostPage: React.FC = () => {
   const { token } = useSupabaseSession();
   const [error, isError] = useState<CustomError | null>(null);
   const router = useRouter();
+
   const handleCreate = async (post: PostType) => {
     try {
       const res = await api.post({
