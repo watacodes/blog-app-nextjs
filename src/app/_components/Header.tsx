@@ -30,7 +30,7 @@ const Header: React.FC = () => {
       return;
     }
 
-    router.push("/");
+    router.replace("/");
     router.refresh();
   };
 
