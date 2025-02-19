@@ -6,10 +6,12 @@ import { usePathname } from "next/navigation";
 type MenuItemProps = {
   href: string;
   children: React.ReactNode;
-  isSelected: (path: string) => boolean;
 };
 
-const MenuItem: React.FC<MenuItemProps> = ({ children, href, isSelected }) => {
+const MenuItem: React.FC<MenuItemProps> = ({ children, href }) => {
+  const pathname = usePathname();
+  const isSelected = (href: string) => pathname.includes(href);
+
   return (
     <Link
       href={href}
@@ -21,17 +23,10 @@ const MenuItem: React.FC<MenuItemProps> = ({ children, href, isSelected }) => {
 };
 
 const AdminSideBar: React.FC = () => {
-  const pathname = usePathname();
-  const isSelected = (href: string) => pathname.includes(href);
-
   return (
     <aside className="flex flex-col w-[280px] bg-gray-100">
-      <MenuItem href="/admin/posts" isSelected={isSelected}>
-        記事一覧
-      </MenuItem>
-      <MenuItem href="/admin/categories" isSelected={isSelected}>
-        カテゴリー一覧
-      </MenuItem>
+      <MenuItem href="/admin/posts">記事一覧</MenuItem>
+      <MenuItem href="/admin/categories">カテゴリー一覧</MenuItem>
     </aside>
   );
 };

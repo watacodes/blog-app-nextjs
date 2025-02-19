@@ -10,13 +10,13 @@ import { Dispatch, SetStateAction } from "react";
 type Props = {
   labelName: string;
   children: React.ReactNode;
-  setThumbnailImageUrl: Dispatch<SetStateAction<string>>;
+  onChangeImageUrl: Dispatch<SetStateAction<string>>;
 };
 
 const FileUploader: React.FC<Props> = ({
   labelName,
   children,
-  setThumbnailImageUrl,
+  onChangeImageUrl,
 }) => {
   const [thumbnailImageKey, setThumbnailImageKey] = useState<string | null>(
     null
@@ -68,11 +68,11 @@ const FileUploader: React.FC<Props> = ({
       } = await supabase.storage
         .from("post_thumbnail")
         .getPublicUrl(thumbnailImageKey);
-      setThumbnailImageUrl(publicUrl);
+      onChangeImageUrl(publicUrl);
     };
 
     fetcher();
-  }, [thumbnailImageKey, setThumbnailImageUrl]);
+  }, [thumbnailImageKey, onChangeImageUrl]);
 
   return (
     <>

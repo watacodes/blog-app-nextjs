@@ -5,16 +5,9 @@ import dayjs from "dayjs";
 import useAdminPosts from "../../_hooks/useAdminPosts";
 import Loading from "../../_components/Loading";
 import ErrorComponent from "../../_components/Error";
-import useSupabaseSession from "../../_hooks/useSupabaseSession";
-import { useEffect } from "react";
 
 const AdminPostList: React.FC = () => {
   const { posts, error, isLoading } = useAdminPosts();
-  const { token } = useSupabaseSession();
-
-  useEffect(() => {
-    if (!token) return;
-  }, [token]);
 
   if (isLoading) return <Loading />;
   if (error) return <ErrorComponent error={error} />;

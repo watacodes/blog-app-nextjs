@@ -1,3 +1,9 @@
+export type CategoryResponse = {
+  status: string;
+  message?: string;
+  category: string;
+};
+
 export type CategoryFormData = {
   category: string;
 };

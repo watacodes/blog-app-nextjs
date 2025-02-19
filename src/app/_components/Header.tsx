@@ -1,12 +1,14 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import useSupabaseSession from "../_hooks/useSupabaseSession";
 import { supabase } from "../../_utils/supabase";
+import { useEffect } from "react";
 
 type HeaderProps = {
   href: string;
-  children: string;
+  children: React.ReactNode;
 };
 
 const HeaderItem: React.FC<HeaderProps> = ({ href, children }) => {
@@ -19,10 +21,11 @@ const HeaderItem: React.FC<HeaderProps> = ({ href, children }) => {
 
 const Header: React.FC = () => {
   const { session, isLoading } = useSupabaseSession();
+  const router = useRouter();
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    window.location.href = "/";
+    router.replace("/");
   };
 
   return (

@@ -1,10 +1,10 @@
-// GET: /api/admin/categories/[id]
-
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { supabase } from "../../../../../_utils/supabase";
 
 const prisma = new PrismaClient();
+
+// GET: /api/admin/categories/[id]
 
 export const GET = async (
   request: NextRequest,
@@ -26,7 +26,7 @@ export const GET = async (
     });
 
     return NextResponse.json(
-      { status: "OK", data: data.name },
+      { status: "OK", category: data.name },
       { status: 200 }
     );
   } catch (error) {
@@ -42,18 +42,18 @@ export const PUT = async (
   { params }: { params: { id: string } }
 ) => {
   const { id } = params;
-  const { name } = await request.json();
+  const { category } = await request.json();
 
   try {
     const findDuplicate = await prisma.category.findFirst({
-      where: { name },
+      where: { name: category },
     });
 
     if (findDuplicate) return;
 
     const update = await prisma.category.update({
       where: { id: Number(id) },
-      data: { name },
+      data: { name: category },
     });
     return NextResponse.json({ status: "OK", data: update }, { status: 200 });
   } catch (error) {

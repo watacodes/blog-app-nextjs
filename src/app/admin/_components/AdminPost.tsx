@@ -79,7 +79,7 @@ export const AdminPost: React.FC<Props> = ({
 
             <FileUploader
               labelName="thumbnailImageKey"
-              setThumbnailImageUrl={setThumbnailImageUrl}
+              onChangeImageUrl={setThumbnailImageUrl}
             >
               サムネイル
             </FileUploader>
@@ -95,9 +95,7 @@ export const AdminPost: React.FC<Props> = ({
               </div>
             )}
 
-            <div>
-              <AdminCategorySelect />
-            </div>
+            <AdminCategorySelect />
 
             <div>
               <button

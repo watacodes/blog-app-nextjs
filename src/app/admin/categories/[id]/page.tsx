@@ -1,51 +1,34 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { CategoryFormData } from "../types/types";
+import useSupabaseSession from "../../../_hooks/useSupabaseSession";
 import CategoryEditForm from "../_components/AdminCategoryEditForm";
-import { useState, useEffect } from "react";
+import { api } from "../../../_utils/api";
+import useFetch from "../../../_hooks/useFetch";
+import { CategoryFormData, CategoryResponse } from "../types/CategoryResponse";
+import Loading from "../../../_components/Loading";
 
 const Page: React.FC = () => {
   const { id } = useParams();
   const router = useRouter();
-  const [initialData, setInitialData] = useState<CategoryFormData | null>(null);
+  const { token } = useSupabaseSession();
+  const { data, isLoading } = useFetch<CategoryResponse>(
+    `/api/admin/categories/${id}`
+  );
 
-  useEffect(() => {
-    const fetcher = async () => {
-      try {
-        const res = await fetch(`/api/admin/categories/${id}`, {
-          method: "GET",
-        });
+  if (isLoading) return <Loading />;
 
-        if (!res.ok) {
-          throw new Error("Failed to fetch category name.");
-        }
+  const category = data?.category ? { category: data.category } : null;
 
-        const { data } = await res.json();
-        setInitialData({ category: data });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetcher();
-  }, [id]);
-
-  const handleUpdate = async (data: CategoryFormData) => {
+  const handleUpdate = async (category: CategoryFormData) => {
     try {
-      const res = await fetch(`/api/admin/categories/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name: data.category }),
+      const res = await api.put({
+        url: `/api/admin/categories/${id}`,
+        token,
+        body: category,
       });
 
-      if (!res.ok) {
-        throw new Error("Failed to update the category name.");
-      }
-
-      const result = await res.json();
-      console.log(result);
+      console.log("The category has been updated: ", category);
       router.push("/admin/categories");
     } catch (error) {
       console.log(error);
@@ -54,23 +37,22 @@ const Page: React.FC = () => {
 
   const handleDelete = async () => {
     try {
-      const res = await fetch(`/api/admin/categories/${id}`, {
-        method: "DELETE",
+      const res = await api.delete({
+        url: `/api/admin/categories/${id}`,
+        token,
       });
 
-      if (res.ok) {
-        router.push("/admin/categories");
-      } else {
-        console.error("Failed to delete category.");
-      }
+      console.log("The category has been deleted: ", category);
+      router.push("/admin/categories");
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
     <div className="flex flex-col w-full p-4">
       <CategoryEditForm
-        initialData={initialData}
+        initialData={category}
         onDelete={handleDelete}
         onSubmit={handleUpdate}
       />

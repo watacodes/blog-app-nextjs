@@ -1,19 +1,14 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import useSWR from "swr";
-import { fetcher } from "../../../../_utils/fetcher";
 import { PostDetailResponse } from "../../../../_types/PostDetailResponse";
-import useSupabaseSession from "../../../../_hooks/useSupabaseSession";
+import useFetch from "../../../../_hooks/useFetch";
 
 const useAdminPostDetail = () => {
   const { id } = useParams();
-  const { token } = useSupabaseSession();
-  const URL = `/api/admin/posts/${id}`;
 
-  const { data, error, isLoading } = useSWR(
-    token ? [URL, token] : null,
-    ([url, token]) => fetcher<PostDetailResponse>({ url, token })
+  const { data, error, isLoading } = useFetch<PostDetailResponse>(
+    `/api/admin/posts/${id}`
   );
 
   const post = data?.post;
