@@ -31,7 +31,6 @@ const Header: React.FC = () => {
     }
 
     router.replace("/");
-    router.refresh();
   };
 
   const UserNavItems: React.FC = () => {
