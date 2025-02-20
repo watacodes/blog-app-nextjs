@@ -1,12 +1,15 @@
 "use client";
 
+import { useRouteGuard } from "./_hooks/useRouteGuard";
 import AdminSideBar from "./_components/AdminSideBar";
 
 const AdminLayout: React.FC = ({ children }: { children: React.ReactNode }) => {
+  useRouteGuard();
+
   return (
-    <div className="flex">
+    <div className="flex flex-1">
       <AdminSideBar />
-      {children}
+      <div className="p-8 w-full">{children}</div>
     </div>
   );
 };

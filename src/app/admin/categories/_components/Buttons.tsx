@@ -1,5 +1,7 @@
+"use client";
+
 import React from "react";
-import { CategoryFormData } from "../types/types";
+import { CategoryFormData } from "../types/CategoryResponse";
 
 type Props = {
   initialData: CategoryFormData;

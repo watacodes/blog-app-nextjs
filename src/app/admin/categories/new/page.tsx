@@ -2,22 +2,22 @@
 
 import { useRouter } from "next/navigation";
 import CategoryEditForm from "../_components/AdminCategoryEditForm";
+import { api } from "../../../_utils/api";
+import useSupabaseSession from "../../../_hooks/useSupabaseSession";
 
 const Page: React.FC = () => {
   const router = useRouter();
+  const { token } = useSupabaseSession();
 
   const onSubmit = async (category) => {
     try {
-      const res = await fetch("/api/admin/categories/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(category),
+      const res = await api.post({
+        url: "/api/admin/categories/",
+        token,
+        body: category,
       });
 
-      const result = await res.json();
-      console.log("Category: ", result);
+      console.log("The category has been submitted: ", res);
       router.push("/admin/categories");
     } catch (error) {
       throw new Error("POST request failed.");

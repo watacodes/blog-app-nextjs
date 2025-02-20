@@ -14,37 +14,36 @@ import {
 import { Controller, useFormContext } from "react-hook-form";
 import useCategories from "../../_hooks/useCategories";
 import Loading from "../../_components/Loading";
-import ErrorComponent from "../../_components/Error";
 
 const AdminCategorySelect: React.FC = () => {
-  const { categories, error, isLoading } = useCategories();
+  const { categories, isLoading } = useCategories();
 
   const {
     control,
     formState: { isSubmitting },
   } = useFormContext();
 
+  if (isLoading) return <Loading />;
+
   const handleCategoryChange = (
     e: SelectChangeEvent<number[]>,
     feildOnChange: (value: { categoryId: number }[]) => void
   ) => {
-    const selectedCategories = (e.target.value as []) || [];
+    const selectedCategories = (e.target.value as number[]) || [];
     const availableCatIds = categories.map((c) => c.id);
+
     const validCatIds = selectedCategories
       .filter((id) => availableCatIds.includes(id))
       .map((id) => ({
         categoryId: id,
       }));
+
     feildOnChange(validCatIds);
   };
-
-  if (isLoading) return <Loading />;
-  if (error) return <ErrorComponent error={error} />;
 
   return (
     <div className="flex flex-col">
       <InputLabel id="postCategories">カテゴリー</InputLabel>
-
       <FormControl fullWidth margin="normal">
         <Controller
           name="postCategories"
@@ -69,13 +68,6 @@ const AdminCategorySelect: React.FC = () => {
                       ))}
                   </Box>
                 );
-              }}
-              MenuProps={{
-                PaperProps: {
-                  sx: {
-                    mt: 16,
-                  },
-                },
               }}
             >
               {categories.map((c) => {

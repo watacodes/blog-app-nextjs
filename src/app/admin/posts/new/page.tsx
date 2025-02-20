@@ -6,26 +6,23 @@ import { PostType } from "../../../_types/PostType";
 import { CustomError } from "../../../_types/CustomError";
 import { useState } from "react";
 import ErrorComponent from "../../../_components/Error";
+import useSupabaseSession from "../../../_hooks/useSupabaseSession";
+import { api } from "../../../_utils/api";
 
 const NewPostPage: React.FC = () => {
-  const router = useRouter();
+  const { token } = useSupabaseSession();
   const [error, isError] = useState<CustomError | null>(null);
+  const router = useRouter();
 
   const handleCreate = async (post: PostType) => {
     try {
-      const res = await fetch("/api/admin/posts/new", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(post),
+      const res = await api.post({
+        url: "/api/admin/posts/new",
+        token,
+        body: post,
       });
 
-      if (!res.ok) {
-        throw new Error("Failed to create post.");
-      }
-      const result = await res.json();
-      console.log("The data has been submitted: ", result);
+      console.log("The data has been submitted: ", res);
       router.push("/admin/posts");
     } catch (error) {
       if (error instanceof Error) isError(error);

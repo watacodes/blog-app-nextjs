@@ -1,13 +1,14 @@
-import useSWR from "swr";
-import { fetcher } from "../_utils/fetcher";
+"use client";
+
+import { CategoriesResponse } from "../_types/CategoriesResponse";
+import useFetch from "./useFetch";
 
 const useCategories = () => {
-  const URL = "/api/admin/categories";
-  const { data, error, isLoading } = useSWR(URL, fetcher, {
-    fallbackData: { categories: [] },
-  });
+  const { data, error, isLoading } = useFetch<CategoriesResponse>(
+    "/api/admin/categories"
+  );
 
-  const categories = data.categories;
+  const categories = data?.categories ?? [];
 
   return { categories, error, isLoading };
 };

@@ -5,7 +5,7 @@ const AdminCategoryLayout: React.FC = ({
 }: {
   children: React.ReactNode;
 }) => {
-  return <div className="flex flex-col w-full p-4">{children}</div>;
+  return <div className="flex flex-col w-full">{children}</div>;
 };
 
 export default AdminCategoryLayout;

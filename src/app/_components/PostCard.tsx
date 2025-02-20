@@ -2,7 +2,7 @@
 
 import dayjs from "dayjs";
 import Link from "next/link";
-import { DisplayPostType } from "../_types/DispalyPostType";
+import { DisplayPostType } from "../_types/DisplayPostType";
 
 type Props = {
   post: DisplayPostType;

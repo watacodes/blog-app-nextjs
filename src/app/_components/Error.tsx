@@ -9,7 +9,7 @@ type Props = {
 const ErrorComponent: React.FC<Props> = ({ error }) => {
   return (
     <div>
-      Oops, something wrong happened! - {error.code}: {error.message}
+      Oops, there's an error! - {error.code}: {error.message}
     </div>
   );
 };
