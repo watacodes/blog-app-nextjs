@@ -36,6 +36,8 @@ const AdminPostEditPage: React.FC = () => {
     try {
       const res = await api.delete({ url: `/api/admin/posts/${id}`, token });
 
+      console.log("Deleted: ", res);
+
       router.push("/admin/posts");
     } catch (error) {
       console.log(error);

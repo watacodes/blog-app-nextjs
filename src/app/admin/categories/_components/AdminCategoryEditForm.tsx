@@ -3,14 +3,16 @@
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { CategoryFormData, CategoryType } from "../types/CategoryResponse";
+import { CategoryType } from "../types/CategoryResponse";
 import Buttons from "./Buttons";
 import { useEffect, useState } from "react";
 import Loading from "../../../_components/Loading";
 
-const schema = yup.object().shape({
+const schema = yup.object({
   category: yup.string().min(1).required(),
 });
+
+type SchemaType = yup.InferType<typeof schema>;
 
 const CategoryEditForm: React.FC<CategoryType> = ({
   initialData,
@@ -22,8 +24,8 @@ const CategoryEditForm: React.FC<CategoryType> = ({
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<CategoryFormData>({
-    resolver: yupResolver(schema) as any,
+  } = useForm<SchemaType>({
+    resolver: yupResolver(schema),
     mode: "onSubmit",
   });
 

@@ -20,6 +20,7 @@ const Page: React.FC = () => {
       console.log("The category has been submitted: ", res);
       router.push("/admin/categories");
     } catch (error) {
+      console.error(error);
       throw new Error("POST request failed.");
     }
   };

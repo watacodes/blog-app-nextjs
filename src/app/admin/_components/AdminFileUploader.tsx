@@ -52,7 +52,7 @@ const FileUploader: React.FC<Props> = ({
 
   const handleFileChange = async (
     e: React.ChangeEvent<HTMLInputElement>,
-    fieldOnChange: (value: string) => void
+    fieldOnChange: (dataPath: string) => void
   ) => {
     const dataPath = await handleImageChange(e);
     setThumbnailImageKey(dataPath);
@@ -81,12 +81,13 @@ const FileUploader: React.FC<Props> = ({
         <Controller
           name={labelName}
           control={control}
-          render={({ field: { onChange, ref, value, ...restField } }) => (
+          render={({ field: { onChange, ref, ...restField } }) => (
             <input
               {...restField}
               type="file"
               ref={ref}
               id={labelName}
+              value=""
               onChange={(e) => handleFileChange(e, onChange)}
               disabled={isSubmitting}
               accept="/image/*"

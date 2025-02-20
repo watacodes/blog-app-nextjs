@@ -2,7 +2,7 @@ import { supabase } from "../../_utils/supabase";
 import { FetcherProps } from "./../_types/FetcherProps";
 
 const getAccessToken = async () => {
-  const { data, error } = await supabase.auth.getSession();
+  const { data } = await supabase.auth.getSession();
   return data.session.access_token;
 };
 

@@ -28,7 +28,7 @@ const Page: React.FC = () => {
         body: category,
       });
 
-      console.log("The category has been updated: ", category);
+      console.log("The category has been updated: ", res);
       router.push("/admin/categories");
     } catch (error) {
       console.log(error);
@@ -42,7 +42,7 @@ const Page: React.FC = () => {
         token,
       });
 
-      console.log("The category has been deleted: ", category);
+      console.log("The category has been deleted: ", res);
       router.push("/admin/categories");
     } catch (error) {
       console.log(error);

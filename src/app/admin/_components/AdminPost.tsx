@@ -38,7 +38,7 @@ export const AdminPost: React.FC<Props> = ({
   );
 
   const methods = useForm({
-    resolver: yupResolver(schema) as any,
+    resolver: yupResolver(schema),
     mode: "onSubmit",
     defaultValues: initialPostData || {
       title: "",

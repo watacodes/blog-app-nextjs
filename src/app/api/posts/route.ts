@@ -1,11 +1,11 @@
 import { PrismaClient } from "@prisma/client";
-import { NextResponse, NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
 // GET: /api/posts
 
-export const GET = async (request: NextRequest) => {
+export const GET = async () => {
   try {
     const posts = await prisma.post.findMany({
       orderBy: {
