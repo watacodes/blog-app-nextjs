@@ -47,6 +47,7 @@ const Header: React.FC = () => {
       <>
         <HeaderItem href="/contact">お問い合わせ</HeaderItem>
         <HeaderItem href="/login">ログイン</HeaderItem>
+        <HeaderItem href="/signup">アカウント作成</HeaderItem>
       </>
     );
   };
